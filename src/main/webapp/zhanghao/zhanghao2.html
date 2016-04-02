@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page session="false" %>
+<html>
+<head>
+    <title>财务详细管理</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../assets/css/dpl-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/bui-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/page-min.css" rel="stylesheet" type="text/css"/>
+    <!-- 下面的样式，仅是为了显示代码，而不应该在项目中使用-->
+    <link href="../assets/css/prettify.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        body, ul, li {
+            margin: 0;
+            padding: 0;
+            font: 12px normal "宋体", Arial, Helvetica, sans-serif;
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+        }
+
+        #tabbox {
+            width: 1000px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .tab_conbox {
+            border-top: none;
+        }
+
+        .tab_con {
+            display: none;
+        }
+
+        .tabs {
+            height: 20px;
+            width: 100%;
+        }
+
+        .tabs li {
+            height: 20px;
+            line-height: 20px;
+            float: left;
+            border-left: none;
+            margin-bottom: -1px;
+            background: #e0e0e0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tabs li a {
+            display: block;
+            padding: 0 20px;
+            outline: none;
+            color: #0066FF;
+        }
+
+
+
+        .tabs .thistab, .tabs .thistab a:hover {
+            background: #fff;
+        }
+
+        .tab_con {
+            padding: 12px;
+            font-size: 14px;
+            line-height: 175%;
+        }
+    </style>
+    <link href="../main/css/jquery.dataTables.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="../js/data.table.translation.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.get("queryUserAccount", function (data) {
+                $("#currency").html(data.split("-")[1]);
+                $("#qrAccount").html(data.split("-")[0]);
+                current = data.split("-")[1];
+            });
+
+            $("#tb").dataTable({
+                "bProcessing": false, // 是否显示取数据时的那个等待提示
+                "bSort": false,
+                "bServerSide": true,//这个用来指明是通过服务端来取数据
+                "sAjaxSource": "queryUserDetail",//这个是请求的地址
+                "fnServerData": retrieveData, // 获取数据的处理函数
+                "columnDefs": [
+                    {
+                        "targets": [0], //隐藏第六列，从第0列开始
+                        "visible": false
+                    }
+                ]
+            });
+
+            $("#tb_length").hide();
+            $("#tb_filter").hide();
+
+        });
+
+        function retrieveData(sSource111, aoData111, fnCallback111) {
+            $.ajax({
+                url: sSource111,//这个就是请求地址对应sAjaxSource
+                data: {"aoData": JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                    fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+                },
+                error: function (msg) {
+                }
+            });
+        }
+
+    </script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+
+            <div class="table-responsive">
+                <div class="panel panel-default" style="height:30px; line-height:30px;">拥有金额：<span id="currency"></span>元，
+                    品牌码：<span id="qrAccount"></span>个
+                </div>
+                <div id="tabbox">
+
+
+
+                                <table id="tb" class="display">
+                                    <thead>
+                                    <tr>
+
+                                        <th>编号</th>
+                                        <th>时间</th>
+                                        <th>增加</th>
+                                        <th>减少</th>
+                                        <th>余额</th>
+                                        <th>原因</th>
+                                    </tr>
+                                    </thead>
+
+
+                                </table>
+
+                            </div>
+
+
+                </div>
+
+
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+
+    </div>
+    <!-- /#ace-settings-container -->
+</div>
+
+</div>
+
+</body>
+</html>   
