@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page session="false" %>
+<html>
+<head>
+    <title>品牌防伪统计</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../main/css/jquery.dataTables.css" type="text/css" rel="stylesheet">
+    <link href="../assets/css/dpl-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/bui-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/page-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/showLoading.css" type="text/css" rel="stylesheet">
+
+    <!-- 下面的样式，仅是为了显示代码，而不应该在项目中使用-->
+    <link href="../assets/css/prettify.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="../js/data.table.translation.js"></script>
+    <script type="text/javascript" src="../js/jquery.showLoading.min.js"></script>
+
+    <style type="text/css">
+        code {
+            padding: 0px 4px;
+            color: #d14;
+            background-color: #f7f7f9;
+            border: 1px solid #e1e1e8;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+    <div class="page-content"><!-- /.page-header -->
+
+        <!--<form class="form-horizontal">-->
+            <!--<fieldset>-->
+                <!--未来对VIP开放-->
+                <!--<div class="control-group" style="float:left;">-->
+                    <!--<div style="float:left;">-->
+                        <!--<select>-->
+                            <!--<option>异常品牌码</option>-->
+                            <!--<option>报警品牌码</option>-->
+                            <!--<option>批次查询</option>-->
+                            <!--<option>品牌码查询</option>-->
+                        <!--</select></div>-->
+                    <!--&lt;!&ndash; Text input&ndash;&gt;-->
+                    <!--<label for="input01" style="float:left;">-->
+                        <!--<input name="text" type="text" class="input-xlarge" placeholder="输入内容" style="float:left;">-->
+                    <!--</label>-->
+
+
+                <!--</div>-->
+                <!--<div style="float:left; margin-left:10px; margin-top:-2px;">-->
+                    <!--<button class="button button-primary" type="button">搜索</button>-->
+
+                <!--</div>-->
+            <!--</fieldset>-->
+        <!--</form>-->
+
+        <div class="table-responsive" style="margin-top:10px;">
+            <table id="tb" class="display">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>产品名称</th>
+                    <th>被查批次</th>
+                    <th>查询时间</th>
+                    <th>查询地点</th>
+                    <th>查询次数</th>
+                    <!--<th>查询状态</th>-->
+                    <!--<th>管理操作</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.row -->
+        <!--<button class="button button-primary" type="button">-->
+
+            <!--批量删除-->
+        <!--</button>-->
+        <!--<button class="button button-primary" type="button">-->
+
+            <!--批量清空-->
+        <!--</button>-->
+
+    </div>
+</div>
+
+
+</body>
+<script>
+    $(function () {
+        $("#tb").dataTable({
+            "bProcessing": false, // 是否显示取数据时的那个等待提示
+            "bSort": false,
+            "bServerSide": true,//这个用来指明是通过服务端来取数据
+            "sAjaxSource": "../tongji/queryUserAllQrCodeInfo",//这个是请求的地址
+            "fnServerData": retrieveData // 获取数据的处理函数
+
+        });
+
+        $("#tb_length").hide();
+        $("#tb_filter").hide();
+
+    });
+    function retrieveData(sSource111, aoData111, fnCallback111) {
+        $(".container").showLoading();
+        $.ajax({
+            url: sSource111,//这个就是请求地址对应sAjaxSource
+            data: {"aoData": JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                $(".container").hideLoading();
+                fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+            },
+            error: function (msg) {
+                $(".container").hideLoading();
+            }
+        });
+    }
+</script>
+</html>   
