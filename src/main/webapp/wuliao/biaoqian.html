@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page session="false" %>
+<html>
+<head>
+    <title>页面流程提示</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../assets/css/dpl-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/bui-min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/page-min.css" rel="stylesheet" type="text/css"/>
+    <!-- 下面的样式，仅是为了显示代码，而不应该在项目中使用-->
+    <link href="../assets/css/prettify.css" rel="stylesheet" type="text/css"/>
+
+    <style type="text/css">
+        code {
+            padding: 0px 4px;
+            color: #d14;
+            background-color: #f7f7f9;
+            border: 1px solid #e1e1e8;
+        }
+
+        .STYLE1 {
+            color: #FF0000
+        }
+    </style>
+    <link href="../umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../umeditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../umeditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="../umeditor/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript" src="../laydate-v1.1/laydate/laydate.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <p><span leipiplugins="select">标签参数：</span></p>
+
+    <p>
+        <span leipiplugins="select">1、</span>生产时间：
+        <input type="text" id="time" onclick="laydate()" value="2015-12-08" name="data_4" style="white-space: normal; width: 150px;"/></p>
+
+
+    <p>
+        <span leipiplugins="select">2、</span>
+        生产地址：<input type="text" id="address" value="中国" name="data_3" style="width: 150px;"/>
+
+
+    <p>
+        <span leipiplugins="select">2、</span>
+        本次销售区域：<input type="text" id="area" value="中国" name="data_3" style="width: 150px;"/>
+
+    <p>
+        <span leipiplugins="select">2、</span>
+        授权经销商：<input type="text" id="author" value="零售" name="data_3" style="width: 150px;"/>
+
+
+
+    </div>
+
+    </div>
+
+    <button type="button" id="update" class="button button-primary" style=" margin-top:10px;margin-bottom:10px;"><a href="#"
+                                                                                                        style="color:#FFFFFF; ">提交</a>
+    </button>
+</div>
+<script>
+    $(function(){
+        var params = window.location.href.split("?")[1];
+        var productId = params.split("=")[0];
+        var batchId =  params.split("=")[1];
+        $.get("queryProductInfo/"+productId+"/"+batchId, function(data) {
+            if(data!="empty")
+            {
+                var dataList = data.split(",");
+                $("#time").val(dataList[0]);
+                $("#address").val(dataList[1]);
+                $("#area").val(dataList[2]);
+                $("#author").val(dataList[3]);
+            }
+
+
+        });
+
+        $("#update").click(function(){
+            $.ajax({
+                url:'createOrUpdateProductInfo',
+                type:"post",
+                data:{
+                    product_id:productId,
+                    batch_no:batchId,
+                    produce_date:$("#time").val(),
+                    produce_address:$("#address").val(),
+                    sell_area:$("#area").val(),
+                    sell_author:$("#author").val()
+                },
+                success:function(data) {
+                    alert(data);
+                    if (data == "success") {
+                        window.history.back();
+                    }
+                    else{
+                        alert("操作失败!");
+                    }
+                }
+            })//end of ajax
+        })
+
+    });
+
+</script>
+
+</body>
+</html>   
