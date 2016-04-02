@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page session="false" %>
+<html>
+ <head>
+  <title>产品批次管理</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <link href="../main/css/jquery.dataTables.css" type="text/css" rel="stylesheet">
+
+     <link href="../assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/bui-min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/page-min.css" rel="stylesheet" type="text/css" />   <!-- 下面的样式，仅是为了显示代码，而不应该在项目中使用-->
+   <link href="../assets/css/prettify.css" rel="stylesheet" type="text/css" />
+
+
+     <style type="text/css">
+    code {
+      padding: 0px 4px;
+      color: #d14;
+      background-color: #f7f7f9;
+      border: 1px solid #e1e1e8;
+    }
+	/* CSS 代码 */ 
+		.black_overlay{ 
+            display: none; 
+            position: absolute; 
+            top: 0%; 
+            left: 0%; 
+            width: 100%; 
+            height: 100%; 
+            background-color: black; 
+            z-index:1001; 
+            -moz-opacity: 0.8; 
+            opacity:.80; 
+            filter: alpha(opacity=88); 
+        } 
+        .white_content { 
+            display: none; 
+            position: absolute; 
+            top: 2%; 
+            left: 3%; 
+            width: 90%; 
+            height: 85%; 
+            padding: 20px; 
+            border: 10px solid #999; 
+            background-color: white; 
+            z-index:1002; 
+            overflow: auto; 
+        }
+DIV.digg { 
+PADDING-RIGHT: 3px;PADDING-BOTTOM: 3px;
+PADDING-TOP: 3px; TEXT-ALIGN: center; margin-top:0px;
+ display:block; float:left; 
+} 
+DIV.digg A { 
+BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid;
+ PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; 
+BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px;
+ BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none 
+} 
+DIV.digg A:hover { 
+BORDER-RIGHT: #000099 1px solid; BORDER-TOP: #000099 1px solid;
+ BORDER-LEFT: #000099 1px solid; COLOR: #000; BORDER-BOTTOM: #000099 1px solid 
+} 
+DIV.digg A:active { 
+BORDER-RIGHT: #000099 1px solid; BORDER-TOP: #000099 1px solid;
+ BORDER-LEFT: #000099 1px solid; COLOR: #000; BORDER-BOTTOM: #000099 1px solid 
+} 
+DIV.digg SPAN.current { 
+BORDER-RIGHT: #000099 1px solid; PADDING-RIGHT: 5px;
+ BORDER-TOP: #000099 1px solid; PADDING-LEFT: 5px; FONT-WEIGHT: bold;
+ PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #000099 1px solid;
+ COLOR: #fff; PADDING-TOP: 2px; BORDER-BOTTOM: #000099 1px solid; BACKGROUND-COLOR: #000099 
+} 
+DIV.digg SPAN.disabled { 
+BORDER-RIGHT: #eee 1px solid; BORDER-TOP: #eee 1px solid;
+ PADDING-LEFT: 0px; PADDING-BOTTOM: 2px;
+ BORDER-LEFT: #eee 1px solid; COLOR: #ddd; PADDING-TOP: 2px;
+ BORDER-BOTTOM: #eee 1px solid 
+} 
+     </style>
+    <link href="../umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+ </head>
+ <script type="text/javascript">
+function open_win3() 
+{
+window.open("bianji3.html")
+}
+</script>
+ <body>
+  
+  <div class="container">
+         <div id="light" class="white_content">
+	<div style="width:200px;display:block; margin:0px auto;">
+	<a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'" style="font-size:14px; text-decoration:none;">关闭本窗口</a>
+	</div>
+	<p><strong>模板相关：</strong>动态标签参数修改</p>
+	<p><span leipiplugins="select">1、</span>生产时间：
+      <input type="text" value="2015-12-13"  name="data_4"  style="white-space: normal; width: 150px;"/></p>
+	<p><span leipiplugins="select">2、</span>生产地址：
+      <input type="text" value="无锡市南长区72号"  name="data_6"  style="white-space: normal; width: 150px;"/></p>
+	<button type="submit" class="button button-primary" style=" margin-top:10px;margin-bottom:10px;"><a href = "../wuliao/success.html"  style="color:#FFFFFF; " >提交修改</a></button>
+	</div> 
+
+        <div id="fade" class="black_overlay"></div>
+		<!--编辑参数项弹出层添加产品 -->
+
+          <form role="form">
+            <label for="search">信息搜索</label>
+            <input name="text" type="text" id="searchContent" placeholder="文本输入">
+            <select name="select" id="searchType" class="form-control">
+              <option value="productId">产品ID搜索</option>
+              <option value="batchNo">批次号搜索</option>
+            </select>
+            <button type="button" id="searchButton" class="button button-primary">搜索</button>
+          </form>
+		  <!-- /.table-responsive -->
+    <br/>
+		<div class="table-responsive">
+   <table id="tb" class="display">
+      
+      <thead>
+         <tr>
+            <th>编号</th>
+			<th>产品ID</th>
+            <th>产品名称</th>
+            <th>批次营销模板</th>
+            <th>产品批次号</th>
+			<th>批次码数量</th>
+            <th>更新时间</th>
+             <th>绑定参数</th>
+             <th>操作（可进行标签关联参数修改）</th>
+         </tr>
+      </thead>
+   </table>
+</div>
+
+</div>
+  <script type="text/javascript" src="../assets/js/jquery-1.8.1.min.js"></script>
+  <script type="text/javascript" src="../assets/js/bui-min.js"></script>
+
+  <script type="text/javascript" src="../assets/js/config-min.js"></script>
+  <script type="text/javascript">
+    BUI.use('common/page');
+  </script>
+  <!-- 仅仅为了显示代码使用，不要在项目中引入使用-->
+  <script type="text/javascript" src="../assets/js/prettify.js"></script>
+  <script type="text/javascript" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" src="../js/jquery.dataTables.js"></script>
+  <script type="text/javascript" src="../js/data.table.translation.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      prettyPrint();
+    });
+  </script> 
+<script type="text/javascript">
+  //引入表单模块          
+  BUI.use('bui/form',function (Form) {
+    //使用水平布局表单(horizontal form)
+    var form = new Form.Form({
+      srcNode : '#J_Form'
+    });
+
+    form.render();
+
+    var form1 = new Form.Form({
+      srcNode : '#J_Form1',
+      //联合校验起始日期
+      validators : {
+        '#group' : function(record){
+          if(record.start > record.end){
+            return '结束日期必须大于起始日期！';
+          }
+        }
+      }
+    });
+
+    form1.render();
+  });
+</script>
+<script>
+    var globalTemp = '';
+    $(function(){
+        //判断是否加载搜索
+        if(window.location.href.indexOf("?")>=0){
+            var content = window.location.href.split("?")[1];
+            $("#searchContent").val(content);
+            $("#searchButton").trigger("click");
+        }
+        //initialTable
+        loadTableData();
+        $("#searchButton").click(function(){
+            $('#tb').dataTable().fnDestroy();
+            loadTableData();
+        })
+
+        //bind click functions
+//        $('.update').on('click', function () {
+//            var productId = $(this).parent().parent().find("td:first-child").html();
+//            if(globalTemp.length>0){
+//                alert(globalTemp);
+//                globalTemp = '';
+//            }else{
+//                alert("请选择要改的产品模版");
+//            }
+//
+//
+//        });
+
+        //bind click functions
+        $('.export').on('click', function () {
+            var productId = $(this).parent().parent().find("td:first-child").html();
+            var batch_no =  $(this).parent().parent().find("td").eq(3).html();
+            //打开下载页面
+            window.open("../qrcode/qr-re-export.html?"+productId+"="+batch_no);
+
+
+        });
+
+        $(".tempClass").on('change',function () {
+            globalTemp = $(this).val();
+        });
+
+        //bind click functions
+        $('.qrcode').on('click', function () {
+            var productId = $(this).parent().parent().find("td:first-child").html();
+            var batch_no =  $(this).parent().parent().find("td").eq(3).html();
+            window.location.href = "bianji3.html?"+productId+"&"+batch_no;
+
+        });
+
+        $(".param").on('click',function () {
+            var productId = $(this).parent().parent().find("td:first-child").html();
+            var batch_no =  $(this).parent().parent().find("td").eq(3).html();
+            window.open("../wuliao/biaoqian.html?"+productId+"="+batch_no,"_self");
+        });
+
+
+        //bind click functions
+        $('.delete').on('click', function () {
+            if (confirm("确认删除这批次的二维码吗？")) {
+                var productId = $(this).parent().parent().find("td:first-child").html();
+                var batch_no =  $(this).parent().parent().find("td").eq(3).html();
+                $.get("../chanpin/deleteQrcode/" + productId+"/"+batch_no, function (data) {
+                    if (data == "success") {
+                        alert("删除成功");
+                        window.location.reload();
+                    }
+                })
+
+            }
+
+        });
+
+    });
+    function loadTableData(){
+        //加载表信息
+        $("#tb").dataTable({
+            "bProcessing": false, // 是否显示取数据时的那个等待提示
+            "bSort": false,
+            "bServerSide": true,//这个用来指明是通过服务端来取数据
+            "sAjaxSource": "../chanpin/queryBatchData",//这个是请求的地址
+            "fnServerData": retrieveData, // 获取数据的处理函数
+            "columnDefs": [
+                {
+                    "targets": [0], //隐藏第六列，从第0列开始
+                    "visible": false
+                }
+            ]
+        });
+
+        $("#tb_length").hide();
+        $("#tb_filter").hide();
+    }
+    function retrieveData(sSource111, aoData111, fnCallback111) {
+        var searchContent = $("#searchContent").val();
+        var searchType = $("#searchType").find("option:selected").val();
+        $.ajax({
+            url: sSource111,//这个就是请求地址对应sAjaxSource
+            data: {
+                    "aoData": JSON.stringify(aoData111),
+                    "searchType":searchType,
+                    "searchContent":searchContent
+            },//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+            },
+            error: function (msg) {
+            }
+        });
+    }
+
+</script>
+</body>
+</html>   
