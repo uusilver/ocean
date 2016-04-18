@@ -102,15 +102,15 @@
                                             </label>
 
                                             <!-- 验证码-->
-                                            <!--<label class="block clearfix">-->
-														<!--<span class="block input-icon input-icon-right">-->
-															<!--<input name="j_code" type="text"placeholder="验证码" id="j_code" maxlength="4" class="form-control" />-->
-															<!--<br/>-->
-                                                               <!--<img id="imgObj" alt="验证码" src="login/code" />-->
-                                                               <!--<a href="#" id="changeJcode" onclick="changeImg()">看不清?换一张</a>-->
-                                                               <!--<span id="jcodeMsg"></span>-->
-                                                        <!--</span>-->
-                                            <!--</label>-->
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input name="j_code" type="text"placeholder="验证码" id="j_code" maxlength="4" class="form-control" />
+															<br/>
+                                                               <img id="kaptchaImage" alt="验证码" src="login/code"/><br/>
+                                                               <a href="#" onclick="changeCode()">看不清?换一张</a><br/>
+                                                               <span id="jcodeMsg"></span>
+                                                        </span>
+                                            </label>
 
                                             <div class="space"></div>
 
@@ -119,7 +119,7 @@
                                                     <input id="rememberMe" type="checkbox" class="ace"/>
                                                     <span class="lbl"> 记住我登录</span> </label>
 
-                                                <button type="submit" id="loginIn"
+                                                <button type="button" id="loginIn"
                                                         class="width-35 pull-right btn btn-sm btn-primary">
                                                     <i class="icon-key"></i>
                                                     登陆
@@ -330,12 +330,11 @@
                     $("#loginForm").submit();
                 }else{
                     //显示错误信息
-                    $("#jcodeMsg").html("<span color='red'>验证码错误</span>");
+                    $("#jcodeMsg").html("<span style='color: red; font-weight: bold;'>验证码错误</span>");
                     //清空
-                    $("#j_code").val();
+                    $("#j_code").val('');
                     //重新生成
-                    $("#changeJcode").trigger('click');
-
+                    $("#kaptchaImage").trigger('click');
                 }
             })
         });
@@ -377,26 +376,42 @@
                 }
             )
         });
+
+        $('#kaptchaImage').click(function () {//生成验证码
+            $(this).hide().attr('src', 'login/code?' + Math.floor(Math.random()*100) ).fadeIn();
+            event.cancelBubble=true;
+        });
     });
 
+    window.onbeforeunload = function(){
+        //关闭窗口时自动退出
+        if(event.clientX>360&&event.clientY<0||event.altKey){
+            alert(parent.document.location);
+        }
+    };
 
-        //改变验证码
-        function changeImg() {
-            var imgSrc = $("#imgObj");
-            var src = imgSrc.attr("src");
-            imgSrc.attr("src", chgUrl(src));
-        }
-        //时间戳
-        //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
-        function chgUrl(url) {
-            var timestamp = (new Date()).valueOf();
-            url = url.substring(0, 17);
-            if ((url.indexOf("&") >= 0)) {
-                url = url + "×tamp=" + timestamp;
-            } else {
-                url = url + "?timestamp=" + timestamp;
-            }
-            return url;
-        }
+    //改变验证码
+    function changeCode() {
+        $('#kaptchaImage').hide().attr('src', 'login/code?' + Math.floor(Math.random()*100) ).fadeIn();
+        event.cancelBubble=true;
+    }
+
+//        function changeImg() {
+//            var imgSrc = $("#imgObj");
+//            var src = imgSrc.attr("src");
+//            imgSrc.attr("src", chgUrl(src));
+//        }
+//        //时间戳
+//        //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+//        function chgUrl(url) {
+//            var timestamp = (new Date()).valueOf();
+//            url = url.substring(0, 17);
+//            if ((url.indexOf("&") >= 0)) {
+//                url = url + "×tamp=" + timestamp;
+//            } else {
+//                url = url + "?timestamp=" + timestamp;
+//            }
+//            return url;
+//        }
 </script>
 </html>
