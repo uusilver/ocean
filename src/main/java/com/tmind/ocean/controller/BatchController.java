@@ -1,6 +1,6 @@
 package com.tmind.ocean.controller;
 
-import com.tmind.ocean.entity.M_USER_ADVICE_TEMPLATE;
+import com.tmind.ocean.entity.UserAdviceTemplateEntity;
 import com.tmind.ocean.model.BatchQueryTo;
 import com.tmind.ocean.service.BatchService;
 import net.sf.json.JSONArray;
@@ -52,7 +52,7 @@ public class BatchController {
         Integer userId = LoginController.getLoginUser(req).getUserId();
         List<BatchQueryTo> batchModel = batchService.queryProductInfo(userId,searchType,searchContent,iDisplayStart,iDisplayLength);
         for (int i = 0; i < batchModel.size(); i++) {
-            List<M_USER_ADVICE_TEMPLATE> adviceTemplates = batchService.queryBatch(userId);
+            List<UserAdviceTemplateEntity> adviceTemplates = batchService.queryBatch(userId);
             //必须绑定了相关批次，才能在批次功能里面看到
 //            if(productList.get(i).getRelate_batch().length()>0){
                 String[] d = {
@@ -95,10 +95,10 @@ public class BatchController {
         return String.valueOf(obj);
     }
 
-    private  String generateOptions(String selectValue, List<M_USER_ADVICE_TEMPLATE> templates){
+    private  String generateOptions(String selectValue, List<UserAdviceTemplateEntity> templates){
         StringBuilder sb = new StringBuilder();
         sb.append("<select class='tempClass'>");
-        for(M_USER_ADVICE_TEMPLATE temp : templates){
+        for(UserAdviceTemplateEntity temp : templates){
             if(temp.getTemplate_name().equalsIgnoreCase(selectValue)){
                 sb.append(" <option selected=\"selected\" value="+temp.getTemplate_name()+">"+temp.getTemplate_label()+"</option>");
             }else{

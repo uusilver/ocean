@@ -1,8 +1,8 @@
 package com.tmind.ocean.controller;
 
 import com.google.gson.Gson;
-import com.tmind.ocean.entity.M_USER_ACCOUNT;
-import com.tmind.ocean.entity.M_USER_ACCOUNT_OPT;
+import com.tmind.ocean.entity.UserAccountEntity;
+import com.tmind.ocean.entity.UserAccountOptEntity;
 import com.tmind.ocean.entity.UserEntity;
 import com.tmind.ocean.service.UserAccountService;
 import com.tmind.ocean.util.SecurityUtil;
@@ -32,7 +32,7 @@ public class UserAccountController {
     @RequestMapping(value="/queryUserAccount", method = RequestMethod.GET)
     @ResponseBody
     public String queryUserAccount(HttpServletRequest req){
-        M_USER_ACCOUNT model = userAccountService.queryAccountForDisplay(LoginController.getLoginUser(req).getUserId());
+        UserAccountEntity model = userAccountService.queryAccountForDisplay(LoginController.getLoginUser(req).getUserId());
         return model.getAccount()+"-"+model.getCurrency();
     }
 
@@ -41,7 +41,7 @@ public class UserAccountController {
     public String purChaseQrAccount(@PathVariable String no4Purchase, HttpServletRequest req){
         Integer userId = LoginController.getLoginUser(req).getUserId();
         //再一次检查
-        M_USER_ACCOUNT model = userAccountService.queryAccountForDisplay(LoginController.getLoginUser(req).getUserId());
+        UserAccountEntity model = userAccountService.queryAccountForDisplay(LoginController.getLoginUser(req).getUserId());
         Integer purchaseAmount = Integer.valueOf(no4Purchase);
         //购买的二维码数量所需的金额
         BigDecimal tempBig = BigDecimal.valueOf(purchaseAmount);
@@ -53,7 +53,7 @@ public class UserAccountController {
             model.setCurrency(model.getCurrency().subtract(realBig));
             model.setAccount(model.getAccount()+purchaseAmount);
             //更新用户购买纪录
-            M_USER_ACCOUNT_OPT opt = new M_USER_ACCOUNT_OPT();
+            UserAccountOptEntity opt = new UserAccountOptEntity();
             opt.setAccount_purchase(purchaseAmount);
             opt.setCurrent_left(model.getCurrency().subtract(realBig));
             opt.setUser_id(userId);
@@ -91,7 +91,7 @@ public class UserAccountController {
 
         // 生成20条测试数据
         List<String[]> lst = new ArrayList<String[]>();
-        List<M_USER_ACCOUNT_OPT> list = userAccountService.queryUserOpt(LoginController.getLoginUser(req).getUserId(),iDisplayStart,iDisplayLength );
+        List<UserAccountOptEntity> list = userAccountService.queryUserOpt(LoginController.getLoginUser(req).getUserId(),iDisplayStart,iDisplayLength );
         for (int i = 0; i < list.size(); i++) {
 
             String[] d = {

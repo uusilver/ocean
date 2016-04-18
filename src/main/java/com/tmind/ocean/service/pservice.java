@@ -1,9 +1,9 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.M_USER_CATEGORY_ENTITY;
-import com.tmind.ocean.entity.M_USER_PRODUCT_ENTITY;
-import com.tmind.ocean.entity.M_USER_PRODUCT_META;
-import com.tmind.ocean.entity.M_USER_QRCODE_ENTITY;
+import com.tmind.ocean.entity.UserCategoryEntity;
+import com.tmind.ocean.entity.UserProductEntity;
+import com.tmind.ocean.entity.UserProductMetaEntity;
+import com.tmind.ocean.entity.UserQrcodeEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,9 +24,9 @@ public class pservice {
         long startMils = System.currentTimeMillis();
         long endMils = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_PRODUCT_META> list = null;
+        List<UserProductMetaEntity> list = null;
         try {
-            String hql = "from M_USER_PRODUCT_META as M_USER_PRODUCT_META";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductMetaEntity as UserProductMetaEntity";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             list = query.list();
             endMils = System.currentTimeMillis();
@@ -43,9 +43,9 @@ public class pservice {
         long startMils = System.currentTimeMillis();
         long endMils = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_PRODUCT_ENTITY> list = null;
+        List<UserProductEntity> list = null;
         try {
-            String hql = "from M_USER_PRODUCT_ENTITY as M_USER_PRODUCT_ENTITY";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductEntity as UserProductEntity";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             list = query.list();
             endMils = System.currentTimeMillis();
@@ -62,9 +62,9 @@ public class pservice {
         long startMils = System.currentTimeMillis();
         long endMils = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_CATEGORY_ENTITY> list = null;
+        List<UserCategoryEntity> list = null;
         try {
-            String hql = "from M_USER_CATEGORY_ENTITY as M_USER_CATEGORY_ENTITY";//使用命名参数，推荐使用，易读。
+            String hql = "from UserCategoryEntity as UserCategoryEntity";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             list = query.list();
             endMils = System.currentTimeMillis();
@@ -81,9 +81,9 @@ public class pservice {
         long startMils = System.currentTimeMillis();
         long endMils = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_QRCODE_ENTITY> list = null;
+        List<UserQrcodeEntity> list = null;
         try {
-            String hql = "from M_USER_QRCODE_ENTITY as M_USER_QRCODE_ENTITY";//使用命名参数，推荐使用，易读。
+            String hql = "from UserQrcodeEntity as UserQrcodeEntity";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             list = query.list();
             endMils = System.currentTimeMillis();

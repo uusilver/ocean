@@ -1,9 +1,9 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.M_USER_PARAMS_ENTITY;
-import com.tmind.ocean.entity.M_USER_PRODUCT_ENTITY;
-import com.tmind.ocean.entity.M_USER_PRODUCT_META;
-import com.tmind.ocean.entity.M_USER_QRCODE_ENTITY;
+import com.tmind.ocean.entity.UserParamsEntity;
+import com.tmind.ocean.entity.UserProductEntity;
+import com.tmind.ocean.entity.UserProductMetaEntity;
+import com.tmind.ocean.entity.UserQrcodeEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import com.tmind.ocean.util.UniqueKeyGenerator;
 import org.apache.commons.logging.Log;
@@ -26,7 +26,7 @@ public class ProductService {
 
     Log log = LogFactory.getLog(ProductService.class);
     //创建产品信息
-    public boolean createUserProducet(M_USER_PRODUCT_META productMeta){
+    public boolean createUserProducet(UserProductMetaEntity productMeta){
         Session session = HibernateUtil.getSessionFactory().openSession();
         productMeta.setAdvice_temp("default");
         try{
@@ -43,11 +43,11 @@ public class ProductService {
 
     //查询产品信息
 
-    public List<M_USER_PRODUCT_META> queryProductInfo(Integer userId, Integer firstRecord, Integer maxResult){
+    public List<UserProductMetaEntity> queryProductInfo(Integer userId, Integer firstRecord, Integer maxResult){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_PRODUCT_META> list = null;
+        List<UserProductMetaEntity> list = null;
         try {
-            String hql = "from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId order by M_USER_PRODUCT_META.update_time desc";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId order by UserProductMetaEntity.update_time desc";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setFirstResult(firstRecord);
@@ -64,7 +64,7 @@ public class ProductService {
     public Integer getProductMetaTotalNo(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "select count(M_USER_PRODUCT_META.id) from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "select count(UserProductMetaEntity.id) from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             return ((Number) query.iterate().next()).intValue();
@@ -84,7 +84,7 @@ public class ProductService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction trans = session.beginTransaction();
-            String hql = "delete M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId and M_USER_PRODUCT_META.product_id=:productId and M_USER_PRODUCT_META.relate_batch=:batchNo";
+            String hql = "delete UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId and UserProductMetaEntity.product_id=:productId and UserProductMetaEntity.relate_batch=:batchNo";
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
@@ -107,12 +107,12 @@ public class ProductService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction trans = session.beginTransaction();
-            String hql = "delete M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId and M_USER_PRODUCT_META.product_id=:productId";
+            String hql = "delete UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId and UserProductMetaEntity.product_id=:productId";
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
             int result  = query.executeUpdate();
-            hql = "delete M_USER_PRODUCT_ENTITY as M_USER_PRODUCT_ENTITY where M_USER_PRODUCT_ENTITY.user_id=:userId and M_USER_PRODUCT_ENTITY.product_id=:productId";
+            hql = "delete UserProductEntity as UserProductEntity where UserProductEntity.user_id=:userId and UserProductEntity.product_id=:productId";
             query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
@@ -130,15 +130,15 @@ public class ProductService {
 
 
     //根据产品id查询
-    public M_USER_PRODUCT_META queryProductInfoById(Integer userId, String productId){
+    public UserProductMetaEntity queryProductInfoById(Integer userId, String productId){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        M_USER_PRODUCT_META productMeta = null;
+        UserProductMetaEntity productMeta = null;
         try {
-            String hql = "from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId and M_USER_PRODUCT_META.product_id=:productId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId and UserProductMetaEntity.product_id=:productId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
-            productMeta = (M_USER_PRODUCT_META)query.list().get(0);
+            productMeta = (UserProductMetaEntity)query.list().get(0);
         }finally {
             if(session!=null){
                 session.close();
@@ -148,7 +148,7 @@ public class ProductService {
     }
 
     //为当前的产品创建一个新的批次-->插入到m_user_product表中
-    public boolean createNewProductBatch(M_USER_PRODUCT_ENTITY productEntity){
+    public boolean createNewProductBatch(UserProductEntity productEntity){
         Session session =null;
         try
         {
@@ -171,7 +171,7 @@ public class ProductService {
     }
 
     //更新产品
-    public boolean updateProductById(M_USER_PRODUCT_META meta){
+    public boolean updateProductById(UserProductMetaEntity meta){
         Session session =null;
         try
         {
@@ -193,12 +193,12 @@ public class ProductService {
         return true;
     }
 
-    public boolean createQrcode(M_USER_PRODUCT_ENTITY productEntityFake, Integer userId, String userType){
+    public boolean createQrcode(UserProductEntity productEntityFake, Integer userId, String userType){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             Transaction tran=session.beginTransaction();
             for(int i=0;i<Integer.valueOf(productEntityFake.getQrcode_total_no());i++){
-                M_USER_QRCODE_ENTITY m_user_qrcode_entity = new M_USER_QRCODE_ENTITY();
+                UserQrcodeEntity m_user_qrcode_entity = new UserQrcodeEntity();
                 m_user_qrcode_entity.setUser_id(userId);
                 m_user_qrcode_entity.setProduct_id(productEntityFake.getProduct_id());
                 m_user_qrcode_entity.setProduct_batch(productEntityFake.getRelate_batch());
@@ -234,24 +234,24 @@ public class ProductService {
     public boolean updateProductAndBatchQrTotalAccount(Integer userId, String productId, String batchId, Integer qrAccount){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tran=session.beginTransaction();
-        M_USER_PRODUCT_ENTITY m_user_product_entity = null;
+        UserProductEntity userProductEntity = null;
         try {
             //更新二维码生成到批次数
-            String hql = "from M_USER_PRODUCT_ENTITY as M_USER_PRODUCT_ENTITY where M_USER_PRODUCT_ENTITY.user_id=:userId and M_USER_PRODUCT_ENTITY.product_id=:productId and M_USER_PRODUCT_ENTITY.relate_batch=:batchId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductEntity as UserProductEntity where UserProductEntity.user_id=:userId and UserProductEntity.product_id=:productId and UserProductEntity.relate_batch=:batchId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
             query.setString("batchId", batchId);
-            m_user_product_entity = (M_USER_PRODUCT_ENTITY)query.list().get(0);
-            m_user_product_entity.setQrcode_total_no(m_user_product_entity.getQrcode_total_no() + qrAccount);
-            session.update(m_user_product_entity);
+            userProductEntity = (UserProductEntity)query.list().get(0);
+            userProductEntity.setQrcode_total_no(userProductEntity.getQrcode_total_no() + qrAccount);
+            session.update(userProductEntity);
             //更新二维码总数
-            hql = "from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId and M_USER_PRODUCT_META.product_id=:productId";//使用命名参数，推荐使用，易读。
+            hql = "from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId and UserProductMetaEntity.product_id=:productId";//使用命名参数，推荐使用，易读。
             query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
-            M_USER_PRODUCT_META meta = null;
-            meta = (M_USER_PRODUCT_META)query.list().get(0);
+            UserProductMetaEntity meta = null;
+            meta = (UserProductMetaEntity)query.list().get(0);
             meta.setQrcode_total_no(meta.getQrcode_total_no() + qrAccount);
             session.update(meta);
             tran.commit();
@@ -271,7 +271,7 @@ public class ProductService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         boolean flag = false;
         try {
-            String hql = "from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId and M_USER_PRODUCT_META.product_name=:productName";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId and UserProductMetaEntity.product_name=:productName";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productName", productName);
@@ -295,7 +295,7 @@ public class ProductService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         boolean flag = false;
         try {
-            String hql = "from M_USER_PRODUCT_ENTITY as M_USER_PRODUCT_ENTITY where M_USER_PRODUCT_ENTITY.user_id=:userId and M_USER_PRODUCT_ENTITY.product_id=:productId and M_USER_PRODUCT_ENTITY.relate_batch=:batchNo";//使用命名参数，推荐使用，易读。
+            String hql = "from UserProductEntity as UserProductEntity where UserProductEntity.user_id=:userId and UserProductEntity.product_id=:productId and UserProductEntity.relate_batch=:batchNo";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
@@ -317,11 +317,11 @@ public class ProductService {
 
     //
     //获得用户的参数
-    public List<M_USER_PARAMS_ENTITY> loadUserParams(Integer userId){
+    public List<UserParamsEntity> loadUserParams(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_PARAMS_ENTITY> list = null;
+        List<UserParamsEntity> list = null;
         try {
-            String hql = "from M_USER_PARAMS_ENTITY as M_USER_PARAMS_ENTITY where M_USER_PARAMS_ENTITY.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserParamsEntity as UserParamsEntity where UserParamsEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             list = query.list();

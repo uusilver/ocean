@@ -1,8 +1,8 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.M_USER_ACCOUNT;
-import com.tmind.ocean.entity.M_USER_ACCOUNT_OPT;
-import com.tmind.ocean.entity.M_USER_PRODUCT_ENTITY;
+import com.tmind.ocean.entity.UserAccountEntity;
+import com.tmind.ocean.entity.UserAccountOptEntity;
+import com.tmind.ocean.entity.UserProductEntity;
 import com.tmind.ocean.entity.UserEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import org.apache.commons.logging.Log;
@@ -27,14 +27,16 @@ public class UserAccountService {
     public boolean judgeCanPrintQrCodeOrNot(Integer printQrcodeNo, Integer userId){
         boolean flag = true;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_PRODUCT_ENTITY> list = null;
+        List<UserProductEntity> list = null;
         try {
-            String hql = "from M_USER_ACCOUNT as M_USER_ACCOUNT where M_USER_ACCOUNT.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserAccountEntity as UserAccountEntity where UserAccountEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
-            Integer qrCodeInAccount = ((M_USER_ACCOUNT)query.list().get(0)).getAccount();
+            Integer qrCodeInAccount = ((UserAccountEntity)query.list().get(0)).getAccount();
             if(qrCodeInAccount<printQrcodeNo)
                 flag =  false;
+        }catch(Exception e){
+            log.error(e.getMessage());
         }finally {
             if(session!=null){
                 session.close();
@@ -47,16 +49,18 @@ public class UserAccountService {
     public boolean updateUserAccountForConsuming(Integer printQrcodeNo, Integer userId){
         boolean flag = true;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_PRODUCT_ENTITY> list = null;
+        List<UserProductEntity> list = null;
         try {
             Transaction tran = session.beginTransaction();
-            String hql = "from M_USER_ACCOUNT as M_USER_ACCOUNT where M_USER_ACCOUNT.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserAccountEntity as UserAccountEntity where UserAccountEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
-            M_USER_ACCOUNT userAccount = ((M_USER_ACCOUNT)query.list().get(0));
+            UserAccountEntity userAccount = ((UserAccountEntity)query.list().get(0));
             userAccount.setAccount(userAccount.getAccount()-printQrcodeNo);
             session.update(userAccount);
             tran.commit();
+        }catch(Exception e){
+            log.error(e.getMessage());
         }finally {
             if(session!=null){
                 session.close();
@@ -65,15 +69,18 @@ public class UserAccountService {
         return flag;
     }
 
-    public M_USER_ACCOUNT queryAccountForDisplay(Integer userId){
+    public UserAccountEntity queryAccountForDisplay(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        M_USER_ACCOUNT mUserAccount = null;
+        UserAccountEntity mUserAccount = null;
         try {
-            String hql = "from M_USER_ACCOUNT as M_USER_ACCOUNT where M_USER_ACCOUNT.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserAccountEntity as UserAccountEntity where UserAccountEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
-            mUserAccount = (M_USER_ACCOUNT)query.list().get(0);
-        }finally {
+            mUserAccount = (UserAccountEntity)query.list().get(0);
+        }catch(Exception e){
+            e.printStackTrace();
+            log.error(e.getMessage());
+        } finally{
             if(session!=null){
                 session.close();
             }
@@ -82,7 +89,7 @@ public class UserAccountService {
     }
 
     //为充值二维码更新
-    public boolean purchaseQrAmountAndKeepRecordIntoOptTable(M_USER_ACCOUNT account, M_USER_ACCOUNT_OPT opt){
+    public boolean purchaseQrAmountAndKeepRecordIntoOptTable(UserAccountEntity account, UserAccountOptEntity opt){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tran = session.beginTransaction();
         try{
@@ -103,7 +110,7 @@ public class UserAccountService {
     }
 
     //单独为了消费二维码更新
-    public boolean purchaseQrAmountAndKeepRecordIntoOptTable(M_USER_ACCOUNT_OPT opt){
+    public boolean purchaseQrAmountAndKeepRecordIntoOptTable(UserAccountOptEntity opt){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tran = session.beginTransaction();
         try{
@@ -122,16 +129,18 @@ public class UserAccountService {
         }
     }
 
-    public List<M_USER_ACCOUNT_OPT> queryUserOpt(Integer userId, Integer firstRecord, Integer maxResult){
+    public List<UserAccountOptEntity> queryUserOpt(Integer userId, Integer firstRecord, Integer maxResult){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_ACCOUNT_OPT> list = null;
+        List<UserAccountOptEntity> list = null;
         try {
-            String hql = "from M_USER_ACCOUNT_OPT as M_USER_ACCOUNT_OPT where M_USER_ACCOUNT_OPT.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "from UserAccountOptEntity as UserAccountOptEntity where UserAccountOptEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setFirstResult(firstRecord);
             query.setMaxResults(maxResult);
             list = query.list();
+        }catch(Exception e){
+            log.error(e.getMessage());
         }finally {
             if(session!=null){
                 session.close();
@@ -144,7 +153,7 @@ public class UserAccountService {
     public Integer getUserOptTotalNo(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "select count(M_USER_ACCOUNT_OPT.id) from M_USER_ACCOUNT_OPT as M_USER_ACCOUNT_OPT where M_USER_ACCOUNT_OPT.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "select count(UserAccountOptEntity.id) from UserAccountOptEntity as UserAccountOptEntity where UserAccountOptEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             return ((Number) query.iterate().next()).intValue();
@@ -167,6 +176,8 @@ public class UserAccountService {
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             user = (UserEntity)query.list().get(0);
+        }catch(Exception e){
+            log.error(e.getMessage());
         }finally {
             if(session!=null){
                 session.close();

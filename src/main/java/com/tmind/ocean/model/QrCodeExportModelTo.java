@@ -3,11 +3,11 @@ package com.tmind.ocean.model;
 /**
  * Created by lijunying on 15/11/28.
  */
-public class QrCodeExportModel {
+public class QrCodeExportModelTo {
     private String visitUrl;
     private String unqueKey;
 
-    public QrCodeExportModel(String visitUrl, String unqueKey) {
+    public QrCodeExportModelTo(String visitUrl, String unqueKey) {
         this.visitUrl = visitUrl;
         this.unqueKey = unqueKey;
     }

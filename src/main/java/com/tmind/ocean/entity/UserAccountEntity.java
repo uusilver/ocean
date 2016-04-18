@@ -6,9 +6,14 @@ import java.math.BigDecimal;
 /**
  * Created by lijunying on 15/11/24.
  */
+/*
+ *  @author: lijunying
+ *  @version 1.0
+ *  @desc: 用户的余额表
+ */
 @Entity
 @Table(name = "m_user_account")
-public class M_USER_ACCOUNT {
+public class UserAccountEntity {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer Id;

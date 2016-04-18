@@ -1,7 +1,7 @@
 package com.tmind.ocean.controller;
 
-import com.tmind.ocean.entity.M_USER_PRODUCT_META;
-import com.tmind.ocean.entity.M_USER_QRCODE_ENTITY;
+import com.tmind.ocean.entity.UserProductMetaEntity;
+import com.tmind.ocean.entity.UserQrcodeEntity;
 import com.tmind.ocean.service.ProductService;
 import com.tmind.ocean.service.QrCodeService;
 import net.sf.json.JSONArray;
@@ -53,11 +53,11 @@ public class UserQrcodeController {
 
         // 生成20条测试数据
         List<String[]> lst = new ArrayList<String[]>();
-        List<M_USER_QRCODE_ENTITY> list = qrCodeService.queryAllQrcodetInfo(LoginController.getLoginUser(req).getUserId(), iDisplayStart, iDisplayLength);
+        List<UserQrcodeEntity> list = qrCodeService.queryAllQrcodetInfo(LoginController.getLoginUser(req).getUserId(), iDisplayStart, iDisplayLength);
         for (int i = 0; i < list.size(); i++) {
             String relatedBatch = null;
             relatedBatch = "<button class=\"addBatch\">添加批次号</button>";
-            M_USER_PRODUCT_META productMeta = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(), list.get(i).getProduct_id());
+            UserProductMetaEntity productMeta = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(), list.get(i).getProduct_id());
             String[] d = {
                     strLize(list.get(i).getId()),
                     strLize(productMeta.getProduct_name()),

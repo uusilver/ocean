@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "M_USER_QRCODE")
-public class M_USER_QRCODE_ENTITY {
+public class UserQrcodeEntity {
 
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)

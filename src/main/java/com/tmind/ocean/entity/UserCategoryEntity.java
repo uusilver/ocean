@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "m_user_category")
-public class M_USER_CATEGORY_ENTITY {
+public class UserCategoryEntity {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer Id;

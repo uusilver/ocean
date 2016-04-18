@@ -1,6 +1,6 @@
 package com.tmind.ocean.util;
 
-import com.tmind.ocean.model.QrCodeExportModel;
+import com.tmind.ocean.model.QrCodeExportModelTo;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
@@ -86,7 +86,7 @@ public class ExcelUtil {
 //        return wb;
 //    }
 
-    public static Workbook createWorkBook(List<QrCodeExportModel> list) {
+    public static Workbook createWorkBook(List<QrCodeExportModelTo> list) {
         // 创建excel工作簿
         Workbook wb = new HSSFWorkbook();
         // 创建第一个sheet（页），并命名

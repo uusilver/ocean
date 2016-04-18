@@ -1,6 +1,6 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.M_USER_ACCOUNT;
+import com.tmind.ocean.entity.UserAccountEntity;
 import com.tmind.ocean.entity.UserEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import org.apache.commons.logging.Log;
@@ -40,7 +40,7 @@ public class AgencyService {
     public Integer getProductMetaTotalNo(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "select count(M_USER_PRODUCT_META.id) from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "select count(UserProductMetaEntity.id) from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             return ((Number) query.iterate().next()).intValue();
@@ -58,10 +58,10 @@ public class AgencyService {
     public Integer getUserAccountNo(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "from M_USER_ACCOUNT as M_USER_ACCOUNT where M_USER_ACCOUNT.user_id=:user_id";//使用命名参数，推荐使用，易读。
+            String hql = "from UserAccountEntity as M_USER_ACCOUNT where UserAccountEntity.user_id=:user_id";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("user_id", userId);
-            return ((M_USER_ACCOUNT)query.list().get(0)).getAccount();
+            return ((UserAccountEntity)query.list().get(0)).getAccount();
         }catch (Exception e){
             log.warn(e.getMessage());
         }

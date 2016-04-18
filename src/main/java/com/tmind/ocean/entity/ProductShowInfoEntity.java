@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "m_product_show_info")
-public class M_PRODUCT_SHOW_INFO {
+public class ProductShowInfoEntity {
 
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -93,7 +93,7 @@ public class M_PRODUCT_SHOW_INFO {
 
     @Override
     public String toString() {
-        return "M_PRODUCT_SHOW_INFO{" +
+        return "ProductShowInfoEntity{" +
                 "Id=" + Id +
                 ", user_id=" + user_id +
                 ", product_id='" + product_id + '\'' +

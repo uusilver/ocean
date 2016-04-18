@@ -3,7 +3,7 @@ package com.tmind.ocean.model;
 /**
  * Created by lijunying on 15/12/17.
  */
-public class UserVistorMapModel {
+public class UserVistorMapModelTo {
 
     private String name;
     private Integer value;
@@ -33,7 +33,7 @@ public class UserVistorMapModel {
         this.color = color;
     }
 
-    public UserVistorMapModel(String name, Integer value, String color) {
+    public UserVistorMapModelTo(String name, Integer value, String color) {
         this.name = name;
         this.value = value;
         this.color = color;

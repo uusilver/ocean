@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "m_user_params")
-public class M_USER_PARAMS_ENTITY {
+public class UserParamsEntity {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer Id;

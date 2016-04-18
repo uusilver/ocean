@@ -1,6 +1,6 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.System_meta_Info;
+import com.tmind.ocean.entity.SystemInfoEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -20,8 +20,8 @@ public class LoadSystemInfoService {
 
     public String loadSysInfo(){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Query q = session.createQuery("from System_meta_Info");
-        List<System_meta_Info> list = q.list();
+        Query q = session.createQuery("from SystemInfoEntity");
+        List<SystemInfoEntity> list = q.list();
         log.info("读取系统信息成功");
         session.close();
         return list.get(0).getSystem_message();

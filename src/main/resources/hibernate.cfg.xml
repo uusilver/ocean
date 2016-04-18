@@ -28,16 +28,16 @@
         <!-- 将来开启二级缓存-->
         <property name="hibernate.cache.use_second_level_cache">false</property>
         <mapping class="com.tmind.ocean.entity.UserEntity" />
-        <mapping class="com.tmind.ocean.entity.System_meta_Info" />
-        <mapping class="com.tmind.ocean.entity.M_USER_PRODUCT_ENTITY" />
-        <mapping class="com.tmind.ocean.entity.M_USER_PRODUCT_META" />
-        <mapping class="com.tmind.ocean.entity.M_USER_CATEGORY_ENTITY" />
-        <mapping class="com.tmind.ocean.entity.M_USER_QRCODE_ENTITY" />
-        <mapping class="com.tmind.ocean.entity.M_USER_ACCOUNT" />
-        <mapping class="com.tmind.ocean.entity.M_USER_ADVICE_TEMPLATE" />
-        <mapping class="com.tmind.ocean.entity.M_USER_ACCOUNT_OPT" />
-        <mapping class="com.tmind.ocean.entity.M_PRODUCT_SHOW_INFO" />
-        <mapping class="com.tmind.ocean.entity.M_USER_PARAMS_ENTITY" />
+        <mapping class="com.tmind.ocean.entity.SystemInfoEntity" />
+        <mapping class="com.tmind.ocean.entity.UserProductEntity" />
+        <mapping class="com.tmind.ocean.entity.UserProductMetaEntity" />
+        <mapping class="com.tmind.ocean.entity.UserCategoryEntity" />
+        <mapping class="com.tmind.ocean.entity.UserQrcodeEntity" />
+        <mapping class="com.tmind.ocean.entity.UserAccountEntity" />
+        <mapping class="com.tmind.ocean.entity.UserAdviceTemplateEntity" />
+        <mapping class="com.tmind.ocean.entity.UserAccountOptEntity" />
+        <mapping class="com.tmind.ocean.entity.ProductShowInfoEntity" />
+        <mapping class="com.tmind.ocean.entity.UserParamsEntity" />
         <mapping class="com.tmind.ocean.entity.AgentUser" />
 
 

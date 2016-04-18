@@ -1,6 +1,6 @@
 package com.tmind.ocean.controller;
 
-import com.tmind.ocean.entity.M_PRODUCT_SHOW_INFO;
+import com.tmind.ocean.entity.ProductShowInfoEntity;
 import com.tmind.ocean.service.ProductInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +25,7 @@ public class ProductInfoController {
     @ResponseBody
     public String queryProductInfo(@PathVariable("productId") String productId, @PathVariable("batchno") String batchno, HttpServletRequest req){
         Integer userId = LoginController.getLoginUser(req).getUserId();
-        M_PRODUCT_SHOW_INFO info = productInfoService.queryInfoBySpecificInfo(productId,batchno,userId);
+        ProductShowInfoEntity info = productInfoService.queryInfoBySpecificInfo(productId,batchno,userId);
         if(info==null){
             return "empty";
         }else{
@@ -35,7 +35,7 @@ public class ProductInfoController {
 
     @RequestMapping(value = "/createOrUpdateProductInfo", method = RequestMethod.POST)
     @ResponseBody
-    public String createOrUpdateProductInfo(M_PRODUCT_SHOW_INFO info, HttpServletRequest req){
+    public String createOrUpdateProductInfo(ProductShowInfoEntity info, HttpServletRequest req){
         info.setUser_id(LoginController.getLoginUser(req).getUserId());
         if(productInfoService.createProductInfo(info)){
             return "success";

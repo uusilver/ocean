@@ -1,6 +1,6 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.M_USER_CATEGORY_ENTITY;
+import com.tmind.ocean.entity.UserCategoryEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +20,7 @@ public class CategoryService {
 
     Log log = LogFactory.getLog(CategoryService.class);
 
-    public boolean createCategory(M_USER_CATEGORY_ENTITY category){
+    public boolean createCategory(UserCategoryEntity category){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction trans = session.beginTransaction();
@@ -35,11 +35,11 @@ public class CategoryService {
         return true;
     }
 
-    public List<M_USER_CATEGORY_ENTITY> queryCategory(Integer userId){
+    public List<UserCategoryEntity> queryCategory(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_CATEGORY_ENTITY> list = null;
+        List<UserCategoryEntity> list = null;
         try{
-            String hql = "from M_USER_CATEGORY_ENTITY as M_USER_CATEGORY_ENTITY where M_USER_CATEGORY_ENTITY.user_id=:userId";
+            String hql = "from UserCategoryEntity as UserCategoryEntity where UserCategoryEntity.user_id=:userId";
             Query query = session.createQuery(hql);
             query.setInteger("userId",userId);
             list = query.list();
@@ -57,7 +57,7 @@ public class CategoryService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction trans = session.beginTransaction();
-            String hql = "delete M_USER_CATEGORY_ENTITY as M_USER_CATEGORY_ENTITY where M_USER_CATEGORY_ENTITY.Id=:Id and M_USER_CATEGORY_ENTITY.user_id=:userId";
+            String hql = "delete UserCategoryEntity as UserCategoryEntity where UserCategoryEntity.Id=:Id and UserCategoryEntity.user_id=:userId";
             Query query = session.createQuery(hql);
             query.setInteger("Id",categoryId);
             query.setInteger("userId",userId);
@@ -73,14 +73,14 @@ public class CategoryService {
 
     public boolean checkCategoryUsedOrNot(Integer categoryId, Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        M_USER_CATEGORY_ENTITY categoryEntity = null;
+        UserCategoryEntity categoryEntity = null;
         try{
-            String hql = "from M_USER_CATEGORY_ENTITY as M_USER_CATEGORY_ENTITY where M_USER_CATEGORY_ENTITY.user_id=:userId and M_USER_CATEGORY_ENTITY.Id=:id";
+            String hql = "from UserCategoryEntity as UserCategoryEntity where UserCategoryEntity.user_id=:userId and UserCategoryEntity.Id=:id";
             Query query = session.createQuery(hql);
             query.setInteger("userId",userId);
             query.setInteger("id",categoryId);
-            categoryEntity = (M_USER_CATEGORY_ENTITY)query.list().get(0);
-            hql = "from M_USER_PRODUCT_META as M_USER_PRODUCT_META where M_USER_PRODUCT_META.user_id=:userId and M_USER_PRODUCT_META.product_category=:product_category";
+            categoryEntity = (UserCategoryEntity)query.list().get(0);
+            hql = "from UserProductMetaEntity as UserProductMetaEntity where UserProductMetaEntity.user_id=:userId and UserProductMetaEntity.product_category=:product_category";
             query = session.createQuery(hql);
             query.setInteger("userId",userId);
             query.setString("product_category",categoryEntity.getCategory_name());
@@ -102,9 +102,9 @@ public class CategoryService {
     public boolean checkCategoryNameExist(Integer userId, String categoryName){
         boolean flag = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<M_USER_CATEGORY_ENTITY> list = null;
+        List<UserCategoryEntity> list = null;
         try{
-            String hql = "from M_USER_CATEGORY_ENTITY as M_USER_CATEGORY_ENTITY where M_USER_CATEGORY_ENTITY.user_id=:userId and M_USER_CATEGORY_ENTITY.category_name=:categoryName";
+            String hql = "from UserCategoryEntity as UserCategoryEntity where UserCategoryEntity.user_id=:userId and UserCategoryEntity.category_name=:categoryName";
             Query query = session.createQuery(hql);
             query.setInteger("userId",userId);
             query.setString("categoryName", categoryName);

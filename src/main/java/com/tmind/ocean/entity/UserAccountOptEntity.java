@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "m_user_account_opt")
-public class M_USER_ACCOUNT_OPT {
+public class UserAccountOptEntity {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer Id;

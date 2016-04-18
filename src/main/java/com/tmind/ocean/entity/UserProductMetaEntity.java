@@ -6,28 +6,29 @@ import javax.persistence.*;
  * Created by lijunying on 15/11/21.
  */
 @Entity
-@Table(name = "m_user_product")
-public class M_USER_PRODUCT_ENTITY {
+@Table(name = "m_user_product_meta")
+public class UserProductMetaEntity {
 
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer Id;
-    @Column(name="user_id")
-    private Integer user_id;
-    @Column(name="product_id") //产品ID
-    private String product_id;
-    @Column(name="relate_batch")  //产品批次
-    private String relate_batch;
+    @Column(name="product_name")
+    private String product_name;
+    @Column(name="product_category") //产品类别
+    private String product_category;
     @Column(name="qrcode_total_no")  //二维码数量
     private Integer qrcode_total_no;
     @Column(name="update_time")
     private String update_time;
+    @Column(name="product_desc")  //产品描述
+    private String product_desc;
+    @Column(name="user_id")
+    private Integer user_id;
+    @Column(name="product_id") //产品ID
+    private String product_id;
     @Column(name="advice_temp")
     private String advice_temp;
-    @Column(name="batch_params")
-    private String batch_params;
-    @Column(name="sellArthor")
-    private String sellArthor;
+
 
 
     public Integer getId() {
@@ -36,6 +37,30 @@ public class M_USER_PRODUCT_ENTITY {
 
     public void setId(Integer id) {
         Id = id;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public String getProduct_category() {
+        return product_category;
+    }
+
+    public void setProduct_category(String product_category) {
+        this.product_category = product_category;
+    }
+
+    public String getProduct_desc() {
+        return product_desc;
+    }
+
+    public void setProduct_desc(String product_desc) {
+        this.product_desc = product_desc;
     }
 
     public Integer getUser_id() {
@@ -52,14 +77,6 @@ public class M_USER_PRODUCT_ENTITY {
 
     public void setProduct_id(String product_id) {
         this.product_id = product_id;
-    }
-
-    public String getRelate_batch() {
-        return relate_batch;
-    }
-
-    public void setRelate_batch(String relate_batch) {
-        this.relate_batch = relate_batch;
     }
 
     public Integer getQrcode_total_no() {
@@ -86,19 +103,4 @@ public class M_USER_PRODUCT_ENTITY {
         this.advice_temp = advice_temp;
     }
 
-    public String getBatch_params() {
-        return batch_params;
-    }
-
-    public void setBatch_params(String batch_params) {
-        this.batch_params = batch_params;
-    }
-
-    public String getSellArthor() {
-        return sellArthor;
-    }
-
-    public void setSellArthor(String sellArthor) {
-        this.sellArthor = sellArthor;
-    }
 }

@@ -169,6 +169,14 @@ public class LoginController {
         return (UserTo) req.getSession().getAttribute("userInSession");
     }
 
+    // 获得session中的userId
+    public static Integer getLoginUserId(HttpServletRequest req) {
+        UserTo userTo = (UserTo) req.getSession().getAttribute("userInSession");
+        return userTo.getUserId();
+    }
+
+    //privates
+
     //将必要的信息存入userTo中间类，返回
     private UserTo prepareUserTo(UserEntity userEntity, UserTo userTo){
         userTo.setUserId(userEntity.getId());

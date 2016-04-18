@@ -38,7 +38,7 @@ public class ProductController {
 
 
     @RequestMapping("/createProduct")
-    public String createProductFromCode(@ModelAttribute("M_USER_PRODUCT_META)") M_USER_PRODUCT_META product,
+    public String createProductFromCode(@ModelAttribute("UserProductMetaEntity)") UserProductMetaEntity product,
                                         HttpServletRequest req, HttpServletResponse response){
         UserTo user = LoginController.getLoginUser(req);
         product.setUser_id(user.getUserId());
@@ -52,7 +52,7 @@ public class ProductController {
     }
 
     @RequestMapping("/createProduct4Edit")
-    public String createProduct4Edit(M_USER_PRODUCT_META product,
+    public String createProduct4Edit(UserProductMetaEntity product,
                                      HttpServletRequest req, HttpServletResponse response){
         UserTo user = LoginController.getLoginUser(req);
         product.setUser_id(user.getUserId());
@@ -88,7 +88,7 @@ public class ProductController {
 
         // 生成20条测试数据
         List<String[]> lst = new ArrayList<String[]>();
-        List<M_USER_PRODUCT_META> productList = productService.queryProductInfo(LoginController.getLoginUser(req).getUserId(),iDisplayStart,iDisplayLength);
+        List<UserProductMetaEntity> productList = productService.queryProductInfo(LoginController.getLoginUser(req).getUserId(),iDisplayStart,iDisplayLength);
         for (int i = 0; i < productList.size(); i++) {
             String relatedBatch = null;
             relatedBatch = "<button class=\"addBatch\">添加批次号</button>";
@@ -127,7 +127,7 @@ public class ProductController {
 
     @RequestMapping(value = "/queryProductById/{productId}", method = RequestMethod.GET)
     public @ResponseBody String queryProductById(@PathVariable String productId,HttpServletRequest req){
-        M_USER_PRODUCT_META m = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
+        UserProductMetaEntity m = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
         return new Gson().toJson(m);
     }
 
@@ -141,8 +141,8 @@ public class ProductController {
     }
 
     @RequestMapping(value="/updateProductById", method = RequestMethod.POST)
-    public  @ResponseBody String updateProductById(M_USER_PRODUCT_META productEntityFake, HttpServletRequest req){
-        M_USER_PRODUCT_META realProductEntity = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productEntityFake.getProduct_id());
+    public  @ResponseBody String updateProductById(UserProductMetaEntity productEntityFake, HttpServletRequest req){
+        UserProductMetaEntity realProductEntity = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productEntityFake.getProduct_id());
         realProductEntity.setProduct_name(productEntityFake.getProduct_name());
         realProductEntity.setProduct_category(productEntityFake.getProduct_category());
         realProductEntity.setProduct_desc(productEntityFake.getProduct_desc());
@@ -156,8 +156,8 @@ public class ProductController {
 
     @RequestMapping(value="/createNewProductBatch", method = RequestMethod.POST)
     public  @ResponseBody String createNewProductBatch(@RequestParam String productId, @RequestParam String batchNo, @RequestParam String batchParams, @RequestParam String sellArthor, HttpServletRequest req){
-        M_USER_PRODUCT_META productMetaInfo = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
-        M_USER_PRODUCT_ENTITY mUserProductEntity = new M_USER_PRODUCT_ENTITY();
+        UserProductMetaEntity productMetaInfo = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
+        UserProductEntity mUserProductEntity = new UserProductEntity();
         mUserProductEntity.setProduct_id(productMetaInfo.getProduct_id());
         mUserProductEntity.setRelate_batch(batchNo);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -177,7 +177,7 @@ public class ProductController {
 
     //创建二维码访问地址
     @RequestMapping(value="/createQrcode", method = RequestMethod.POST)
-    public  @ResponseBody String createQrcode(M_USER_PRODUCT_ENTITY productEntityFake, HttpServletRequest req){
+    public  @ResponseBody String createQrcode(UserProductEntity productEntityFake, HttpServletRequest req){
         //普通用户只可以一批次生成10000个二维码
         //VIP用户则可以生成多个，但是导出需要通知后台
         if(productEntityFake.getQrcode_total_no()>10000){
@@ -196,8 +196,8 @@ public class ProductController {
                         userAccountService.updateUserAccountForConsuming(Integer.valueOf(productEntityFake.getQrcode_total_no()), userId);
                         productService.updateProductAndBatchQrTotalAccount(userId, productEntityFake.getProduct_id(), productEntityFake.getRelate_batch(), Integer.valueOf(productEntityFake.getQrcode_total_no()));
                         //更新用户消费纪录;
-                        M_USER_ACCOUNT account = userAccountService.queryAccountForDisplay(userId);
-                        M_USER_ACCOUNT_OPT opt = new M_USER_ACCOUNT_OPT();
+                        UserAccountEntity account = userAccountService.queryAccountForDisplay(userId);
+                        UserAccountOptEntity opt = new UserAccountOptEntity();
                         opt.setUser_id(userId);
                         opt.setAccount_consume(Integer.valueOf(productEntityFake.getQrcode_total_no()));
                         opt.setCurrent_left(account.getCurrency());
@@ -222,8 +222,8 @@ public class ProductController {
                     userAccountService.updateUserAccountForConsuming(Integer.valueOf(productEntityFake.getQrcode_total_no()), userId);
                     productService.updateProductAndBatchQrTotalAccount(userId, productEntityFake.getProduct_id(), productEntityFake.getRelate_batch(), Integer.valueOf(productEntityFake.getQrcode_total_no()));
                     //更新用户消费纪录;
-                    M_USER_ACCOUNT account = userAccountService.queryAccountForDisplay(userId);
-                    M_USER_ACCOUNT_OPT opt = new M_USER_ACCOUNT_OPT();
+                    UserAccountEntity account = userAccountService.queryAccountForDisplay(userId);
+                    UserAccountOptEntity opt = new UserAccountOptEntity();
                     opt.setUser_id(userId);
                     opt.setAccount_consume(Integer.valueOf(productEntityFake.getQrcode_total_no()));
                     opt.setCurrent_left(account.getCurrency());
@@ -245,8 +245,8 @@ public class ProductController {
 
     //给产品添加新的批次号
     @RequestMapping(value="/createNewBatchForOldProduct", method=RequestMethod.POST)
-    public @ResponseBody String createNewBatchForOldProduct(M_USER_PRODUCT_META productEntityFake, HttpServletRequest req){
-        M_USER_PRODUCT_META realProductEntity = new M_USER_PRODUCT_META();
+    public @ResponseBody String createNewBatchForOldProduct(UserProductMetaEntity productEntityFake, HttpServletRequest req){
+        UserProductMetaEntity realProductEntity = new UserProductMetaEntity();
         realProductEntity.setUser_id(LoginController.getLoginUser(req).getUserId());
         realProductEntity.setProduct_name(productEntityFake.getProduct_name());
         realProductEntity.setProduct_id(productEntityFake.getProduct_id());
@@ -257,37 +257,7 @@ public class ProductController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         realProductEntity.setUpdate_time(sdf.format(new Date()));
         if (productService.createUserProducet(realProductEntity)) {
-            //新增批次环节不再支持二维码生成操作，注释掉一下代码，其中返回"charge"代表用户需要充值
-//            Integer userId = LoginController.getLoginUser(req).getUserId();
-//            //检测二维码余额是否够打印
-//            if(userAccountService.judgeCanPrintQrCodeOrNot(Integer.valueOf(productEntityFake.getQrcode_total_no()), userId)){
-//                //创建二维码
-//                for(int i=0;i<Integer.valueOf(productEntityFake.getQrcode_total_no());i++){
-//                    M_USER_QRCODE_ENTITY m_user_qrcode_entity = new M_USER_QRCODE_ENTITY();
-//                    m_user_qrcode_entity.setUser_id(LoginController.getLoginUser(req).getUserId());
-//                    m_user_qrcode_entity.setProduct_id(productEntityFake.getProduct_id());
-//                    m_user_qrcode_entity.setProduct_batch(productEntityFake.getRelate_batch());
-//                    //绑定唯一码
-//                    String qrcodeQueryString = generateQRCodeString(productEntityFake.getProduct_id());
-//                    m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);
-//                    productService.createQrcode(m_user_qrcode_entity);
-//                }
-//                //更新二维码创建信息
-//                userAccountService.updateUserAccountForConsuming(Integer.valueOf(productEntityFake.getQrcode_total_no()), userId);
-//                productService.updateProductAndBatchQrTotalAccount(userId, productEntityFake.getProduct_id(), productEntityFake.getRelate_batch(), Integer.valueOf(productEntityFake.getQrcode_total_no()));
-//                //更新用户消费纪录;
-//                M_USER_ACCOUNT account = userAccountService.queryAccountForDisplay(userId);
-//                M_USER_ACCOUNT_OPT opt = new M_USER_ACCOUNT_OPT();
-//                opt.setUser_id(userId);
-//                opt.setAccount_consume(Integer.valueOf(productEntityFake.getQrcode_total_no()));
-//                opt.setCurrent_left(account.getCurrency());
-//                opt.setUpdate_time(sdf.format(new Date()));
-//                opt.setReason("二维码生产");
-//                userAccountService.purchaseQrAmountAndKeepRecordIntoOptTable(opt);
             return "success";
-//            }else{
-//                return "charge";
-//            }
         }
         else
             return "failed";
@@ -316,11 +286,12 @@ public class ProductController {
     //获得用户的参数属性
     @RequestMapping(value="/loadUserParams", method = RequestMethod.GET)
     public @ResponseBody String loadUserParams(HttpServletRequest request){
-        List<M_USER_PARAMS_ENTITY> list = productService.loadUserParams(LoginController.getLoginUser(request).getUserId());
+        List<UserParamsEntity> list = productService.loadUserParams(LoginController.getLoginUser(request).getUserId());
         return new Gson().toJson(list);
     }
 
-    //private methods
+
+    //private
     private String strLize(Object obj){
         return String.valueOf(obj);
     }

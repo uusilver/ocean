@@ -1,6 +1,6 @@
 package com.tmind.ocean.service;
 
-import com.tmind.ocean.entity.M_PRODUCT_SHOW_INFO;
+import com.tmind.ocean.entity.ProductShowInfoEntity;
 import com.tmind.ocean.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 @Service("productInfoService")
 public class ProductInfoService {
 
-    public boolean createProductInfo(M_PRODUCT_SHOW_INFO infoEntity){
+    public boolean createProductInfo(ProductShowInfoEntity infoEntity){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             Transaction tran=session.beginTransaction();
-            String hql = "delete M_PRODUCT_SHOW_INFO as M_PRODUCT_SHOW_INFO where M_PRODUCT_SHOW_INFO.user_id=:userId and M_PRODUCT_SHOW_INFO.product_id=:productId and M_PRODUCT_SHOW_INFO.batch_no=:batchNo";
+            String hql = "delete ProductShowInfoEntity as ProductShowInfoEntity where ProductShowInfoEntity.user_id=:userId and ProductShowInfoEntity.product_id=:productId and ProductShowInfoEntity.batch_no=:batchNo";
             Query query = session.createQuery(hql);
             query.setInteger("userId", infoEntity.getUser_id());
             query.setString("productId",infoEntity.getProduct_id());
@@ -37,17 +37,17 @@ public class ProductInfoService {
         return true;
     }
 
-    public M_PRODUCT_SHOW_INFO queryInfoBySpecificInfo(String productId, String batchNo, Integer userId){
+    public ProductShowInfoEntity queryInfoBySpecificInfo(String productId, String batchNo, Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        M_PRODUCT_SHOW_INFO info = null;
+        ProductShowInfoEntity info = null;
         try{
-            String hql = "from M_PRODUCT_SHOW_INFO as M_PRODUCT_SHOW_INFO where M_PRODUCT_SHOW_INFO.user_id=:userId and M_PRODUCT_SHOW_INFO.product_id=:productId and M_PRODUCT_SHOW_INFO.batch_no=:batchNo";//使用命名参数，推荐使用，易读。
+            String hql = "from ProductShowInfoEntity as ProductShowInfoEntity where ProductShowInfoEntity.user_id=:userId and ProductShowInfoEntity.product_id=:productId and ProductShowInfoEntity.batch_no=:batchNo";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId",productId);
             query.setString("batchNo",batchNo);
             if (query.list().size()>0)
-                    info = (M_PRODUCT_SHOW_INFO)query.list().get(0);
+                    info = (ProductShowInfoEntity)query.list().get(0);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

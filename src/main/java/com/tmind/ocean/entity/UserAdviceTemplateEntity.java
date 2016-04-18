@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "m_user_advice_template")
-public class M_USER_ADVICE_TEMPLATE {
+public class UserAdviceTemplateEntity {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer Id;

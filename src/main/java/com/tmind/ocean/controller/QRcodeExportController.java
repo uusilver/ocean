@@ -1,7 +1,7 @@
 package com.tmind.ocean.controller;
 
-import com.tmind.ocean.entity.M_USER_QRCODE_ENTITY;
-import com.tmind.ocean.model.QrCodeExportModel;
+import com.tmind.ocean.entity.UserQrcodeEntity;
+import com.tmind.ocean.model.QrCodeExportModelTo;
 import com.tmind.ocean.service.QrCodeService;
 import com.tmind.ocean.util.ExcelUtil;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ public class QRcodeExportController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fileName="二维码数据导出"+sdf.format(new Date());
         //填充projects数据
-        List<QrCodeExportModel> qrcodeModel=createData(LoginController.getLoginUser(request).getUserId(),productId, productBath);
+        List<QrCodeExportModelTo> qrcodeModel=createData(LoginController.getLoginUser(request).getUserId(),productId, productBath);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ExcelUtil.createWorkBook(qrcodeModel).write(os);
@@ -74,7 +74,7 @@ public class QRcodeExportController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fileName="二维码数据导出"+sdf.format(new Date());
         //填充projects数据
-        List<QrCodeExportModel> qrcodeModel=createReExportData(LoginController.getLoginUser(request).getUserId(),productId, productBath);
+        List<QrCodeExportModelTo> qrcodeModel=createReExportData(LoginController.getLoginUser(request).getUserId(),productId, productBath);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ExcelUtil.createWorkBook(qrcodeModel).write(os);
@@ -111,39 +111,39 @@ public class QRcodeExportController {
     }
 
 
-    private List<QrCodeExportModel> createData(Integer userId, String productId, String batchId) {
+    private List<QrCodeExportModelTo> createData(Integer userId, String productId, String batchId) {
         //查询具体的二维码
-        List<M_USER_QRCODE_ENTITY> list = qrCodeService.queryQrCode(userId,productId,batchId);
-        List<QrCodeExportModel> list4PrintModel = new ArrayList<QrCodeExportModel>();
+        List<UserQrcodeEntity> list = qrCodeService.queryQrCode(userId,productId,batchId);
+        List<QrCodeExportModelTo> list4PrintModel = new ArrayList<QrCodeExportModelTo>();
         //创建第一行
-        list4PrintModel.add(new QrCodeExportModel("二维码地址","唯一识别码"));
+        list4PrintModel.add(new QrCodeExportModelTo("二维码地址","唯一识别码"));
         //真正的数据
-        for(M_USER_QRCODE_ENTITY entityModel:list){
-            list4PrintModel.add(new QrCodeExportModel(entityModel.getQr_query_string(),entityModel.getQuery_match()));
+        for(UserQrcodeEntity entityModel:list){
+            list4PrintModel.add(new QrCodeExportModelTo(entityModel.getQr_query_string(),entityModel.getQuery_match()));
         }
 
         return list4PrintModel;
     }
 
-    private List<QrCodeExportModel> createReExportData(Integer userId, String productId, String batchId) {
+    private List<QrCodeExportModelTo> createReExportData(Integer userId, String productId, String batchId) {
         //查询具体的二维码
-        List<M_USER_QRCODE_ENTITY> list = qrCodeService.queryQrCodeForReExport(userId,productId,batchId);
-        List<QrCodeExportModel> list4PrintModel = new ArrayList<QrCodeExportModel>();
+        List<UserQrcodeEntity> list = qrCodeService.queryQrCodeForReExport(userId,productId,batchId);
+        List<QrCodeExportModelTo> list4PrintModel = new ArrayList<QrCodeExportModelTo>();
         //创建第一行
-        list4PrintModel.add(new QrCodeExportModel("二维码地址","唯一识别码"));
+        list4PrintModel.add(new QrCodeExportModelTo("二维码地址","唯一识别码"));
         //真正的数据
-        for(M_USER_QRCODE_ENTITY entityModel:list){
-            list4PrintModel.add(new QrCodeExportModel(entityModel.getQr_query_string(),entityModel.getQuery_match()));
+        for(UserQrcodeEntity entityModel:list){
+            list4PrintModel.add(new QrCodeExportModelTo(entityModel.getQr_query_string(),entityModel.getQuery_match()));
         }
 
         return list4PrintModel;
     }
 
-    private List<Map<String, Object>> createExcelRecord(List<QrCodeExportModel> projects) {
+    private List<Map<String, Object>> createExcelRecord(List<QrCodeExportModelTo> projects) {
         List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         listmap.add(map);
-        QrCodeExportModel project=null;
+        QrCodeExportModelTo project=null;
         for (int j = 0; j < projects.size(); j++) {
             project=projects.get(j);
             Map<String, Object> mapValue = new HashMap<String, Object>();
