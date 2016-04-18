@@ -95,12 +95,14 @@ public class BatchController {
         return String.valueOf(obj);
     }
 
+    //将一个list转换成一个下拉列表框
+    //TODO 变成一个范型通用方法
     private  String generateOptions(String selectValue, List<UserAdviceTemplateEntity> templates){
         StringBuilder sb = new StringBuilder();
         sb.append("<select class='tempClass'>");
         for(UserAdviceTemplateEntity temp : templates){
             if(temp.getTemplate_name().equalsIgnoreCase(selectValue)){
-                sb.append(" <option selected=\"selected\" value="+temp.getTemplate_name()+">"+temp.getTemplate_label()+"</option>");
+                sb.append(" <option value="+temp.getTemplate_name()+">"+temp.getTemplate_label()+"</option>");
             }else{
                 sb.append(" <option value="+temp.getTemplate_name()+">"+temp.getTemplate_label()+"</option>");
             }
