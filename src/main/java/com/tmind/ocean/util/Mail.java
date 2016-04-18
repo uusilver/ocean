@@ -10,18 +10,17 @@ import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 public class Mail {
-	private MimeMessage mimeMsg; //MIME�ʼ�����   
-    private Session session; //�ʼ��Ự����   
-    private Properties props; //ϵͳ����   
-    private boolean needAuth = false; //smtp�Ƿ���Ҫ��֤   
-    //smtp��֤�û��������   
+	private MimeMessage mimeMsg; //MIME   
+    private Session session; //
+    private Properties props; //  
+    private boolean needAuth = false; //  
     private String username;   
     private String password;   
-    private Multipart mp; //Multipart����,�ʼ�����,����,���������ݾ���ӵ����к������MimeMessage����   
+    private Multipart mp; //Multipart  
        
     /** 
      * Constructor 
-     * @param smtp �ʼ����ͷ����� 
+     * @param smtp 
      */  
     public Mail(String smtp){   
         setSmtpHost(smtp);   
@@ -29,26 +28,26 @@ public class Mail {
     }   
   
     /** 
-     * �����ʼ����ͷ����� 
+     * 
      * @param hostName String  
      */  
     public void setSmtpHost(String hostName) {   
         System.out.println("mail.smtp.host名 = "+hostName);
         if(props == null)  
-            props = System.getProperties(); //���ϵͳ���Զ���    
-        props.put("mail.smtp.host",hostName); //����SMTP����   
+            props = System.getProperties(); //   
+        props.put("mail.smtp.host",hostName); //  
     }   
   
   
     /** 
-     * ����MIME�ʼ�����   
+     *    
      * @return 
      */  
     public boolean createMimeMessage()   
     {   
         try {   
             System.out.println("createMimeMessage");
-            session = Session.getDefaultInstance(props,null); //����ʼ��Ự����   
+            session = Session.getDefaultInstance(props,null); // 
         }   
         catch(Exception e){   
             System.err.println("createMimeMessage Error"+e);
@@ -57,7 +56,7 @@ public class Mail {
       
         System.out.println("createMimeMessage");
         try {   
-            mimeMsg = new MimeMessage(session); //����MIME�ʼ�����   
+            mimeMsg = new MimeMessage(session); //  
             mp = new MimeMultipart();   
           
             return true;   
@@ -68,7 +67,7 @@ public class Mail {
     }     
       
     /** 
-     * ����SMTP�Ƿ���Ҫ��֤ 
+     * SMTPǷҪ֤ 
      * @param need 
      */  
     public void setNeedAuth(boolean need) {   
@@ -82,7 +81,7 @@ public class Mail {
     }   
   
     /** 
-     * �����û�������� 
+     * û 
      * @param name 
      * @param pass 
      */  
@@ -92,7 +91,7 @@ public class Mail {
     }   
   
     /** 
-     * �����ʼ����� 
+     * ʼ 
      * @param mailSubject 
      * @return 
      */  
@@ -109,7 +108,7 @@ public class Mail {
     }  
       
     /**  
-     * �����ʼ����� 
+     * ʼ 
      * @param mailBody String  
      */   
     public boolean setBody(String mailBody) {   
@@ -125,7 +124,7 @@ public class Mail {
         }   
     }   
     /**  
-     * ��Ӹ��� 
+     * Ӹ 
      * @param filename String  
      */   
     public boolean addFileAffix(String filename) {   
@@ -147,20 +146,20 @@ public class Mail {
     }   
       
     /**  
-     * ���÷����� 
+     * ÷ 
      * @param from String  
      */   
     public boolean setFrom(String from) {   
         System.out.println("setFrom");
         try{   
-            mimeMsg.setFrom(new InternetAddress(from)); //���÷�����   
+            mimeMsg.setFrom(new InternetAddress(from)); //÷   
             return true;   
         } catch(Exception e) {   
             return false;   
         }   
     }   
     /**  
-     * ���������� 
+     *  
      * @param to String  
      */   
     public boolean setTo(String to){   
@@ -174,7 +173,7 @@ public class Mail {
     }   
       
     /**  
-     * ���ó����� 
+     * ó 
      * @param copyto String   
      */   
     public boolean setCopyTo(String copyto)   
@@ -189,7 +188,7 @@ public class Mail {
     }   
       
     /**  
-     * �����ʼ� 
+     * ʼ 
      */   
     public boolean sendOut()   
     {   
@@ -215,7 +214,7 @@ public class Mail {
     }   
   
     /** 
-     * ����sendOut��������ʼ����� 
+     * sendOutʼ 
      * @param smtp 
      * @param from 
      * @param to 
@@ -227,7 +226,7 @@ public class Mail {
      */  
     public static boolean send(String smtp,String from,String to,String subject,String content,String username,String password) {  
         Mail theMail = new Mail(smtp);  
-        theMail.setNeedAuth(true); //��Ҫ��֤  
+        theMail.setNeedAuth(true); //Ҫ֤  
           
         if(!theMail.setSubject(subject)) return false;  
         if(!theMail.setBody(content)) return false;  
@@ -240,7 +239,7 @@ public class Mail {
     }  
       
     /** 
-     * ����sendOut��������ʼ�����,���� 
+     * sendOutʼ, 
      * @param smtp 
      * @param from 
      * @param to 
@@ -253,7 +252,7 @@ public class Mail {
      */  
     public static boolean sendAndCc(String smtp,String from,String to,String copyto,String subject,String content,String username,String password) {  
         Mail theMail = new Mail(smtp);  
-        theMail.setNeedAuth(true); //��Ҫ��֤  
+        theMail.setNeedAuth(true); //Ҫ֤  
           
         if(!theMail.setSubject(subject)) return false;  
         if(!theMail.setBody(content)) return false;  
@@ -267,7 +266,7 @@ public class Mail {
     }  
       
     /** 
-     * ����sendOut��������ʼ�����,��� 
+     * sendOutʼ, 
      * @param smtp 
      * @param from 
      * @param to 
@@ -275,12 +274,12 @@ public class Mail {
      * @param content 
      * @param username 
      * @param password 
-     * @param filename ����·�� 
+     * @param filename · 
      * @return 
      */  
     public static boolean send(String smtp,String from,String to,String subject,String content,String username,String password,String filename) {  
         Mail theMail = new Mail(smtp);  
-        theMail.setNeedAuth(true); //��Ҫ��֤  
+        theMail.setNeedAuth(true); //Ҫ֤  
           
         if(!theMail.setSubject(subject)) return false;  
         if(!theMail.setBody(content)) return false;  
@@ -294,7 +293,7 @@ public class Mail {
     }  
       
     /** 
-     * ����sendOut��������ʼ�����,����ͳ��� 
+     * sendOutʼ,ͳ 
      * @param smtp 
      * @param from 
      * @param to 
@@ -308,7 +307,7 @@ public class Mail {
      */  
     public static boolean sendAndCc(String smtp,String from,String to,String copyto,String subject,String content,String username,String password,String filename) {  
         Mail theMail = new Mail(smtp);  
-        theMail.setNeedAuth(true); //��Ҫ��֤  
+        theMail.setNeedAuth(true); //Ҫ֤  
           
         if(!theMail.setSubject(subject)) return false;  
         if(!theMail.setBody(content)) return false;  

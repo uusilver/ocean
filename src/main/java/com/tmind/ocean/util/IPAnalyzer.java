@@ -1,5 +1,7 @@
 package com.tmind.ocean.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,11 +15,15 @@ import java.net.URL;
  */
 public class IPAnalyzer {
 
+    //用来分析ip地址，来获取物理地址
+    //TODO freeapi.ipip.net有问题，需要寻找一个备份的方案
     final static int BUFFER_SIZE = 4096;
+
+    private  static Logger log = Logger.getLogger(IPAnalyzer.class);
+
 
     public static String queryAddressByIp(String ip) {
         //http://freeapi.ipip.net/58.213.20.42
-        //需要请求的restful地址
         String content = null;
 
         // 提交模式
@@ -26,35 +32,25 @@ public class IPAnalyzer {
 
             //打开restful链接
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Accept", "application/json");
             conn.setRequestMethod("GET");//POST GET PUT DELETE
             conn.setConnectTimeout(10000);//连接超时 单位毫秒
             conn.setReadTimeout(2000);//读取超时 单位毫秒
             //读取请求返回值
             InputStream inStream = conn.getInputStream();
             content = InputStreamTOString(inStream);
-//        String[] list = content.replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", "").split(",");
-//        for (String s : list) {
-//            System.out.println(s);
-//        }
+
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         return content;
-    }
-
-    public static void main(String[] args) {
-        try {
-            queryAddressByIp("58.213.20.42");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private static String InputStreamTOString(InputStream in) throws Exception {
@@ -64,8 +60,6 @@ public class IPAnalyzer {
         int count = -1;
         while ((count = in.read(data, 0, BUFFER_SIZE)) != -1)
             outStream.write(data, 0, count);
-
-        data = null;
         return new String(outStream.toByteArray(), "UTF-8");
     }
 }

@@ -1,5 +1,6 @@
 package com.tmind.ocean.util;
 
+import org.apache.log4j.Logger;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -12,13 +13,15 @@ import java.security.NoSuchAlgorithmException;
  */
 public class SecurityUtil {
 
+    private  static Logger log = org.apache.log4j.Logger.getLogger(IPAnalyzer.class);
+
     //MD5 加密
     public static String encodeWithMd5Hash(String oriStr){
         MessageDigest md = null;//SHA 或者 MD5
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         BASE64Encoder  base = new BASE64Encoder ();
         String hashStr = base.encode(md.digest(oriStr.getBytes()));

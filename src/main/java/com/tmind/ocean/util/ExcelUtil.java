@@ -92,26 +92,14 @@ public class ExcelUtil {
         // 创建第一个sheet（页），并命名
         Sheet sheet = wb.createSheet("sheet1");
         // 手动设置列宽。第一个参数表示要为第几列设；，第二个参数表示列的宽度，n为列高的像素数。
-//        for(int i=0;i<keys.length;i++){
-//            sheet.setColumnWidth((short) i, (short) (35.7 * 150));
-//        }
-
-
 
         // 创建两种单元格格式
         CellStyle cs2 = wb.createCellStyle();
         Font f2 = wb.createFont();
 
-
-
         // 创建第二种字体样式（用于值）
         f2.setFontHeightInPoints((short) 10);
         f2.setColor(IndexedColors.BLACK.getIndex());
-
-//        Font f3=wb.createFont();
-//        f3.setFontHeightInPoints((short) 10);
-//        f3.setColor(IndexedColors.RED.getIndex());
-
 
         // 设置第二种单元格的样式（用于值）
         cs2.setFont(f2);
