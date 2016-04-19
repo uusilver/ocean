@@ -4,7 +4,7 @@
 <%@ page session="false" %>
 <html>
  <head>
-  <title>产品批次管理</title>
+  <title>产品批次及品牌码管理</title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
      <link href="../main/css/jquery.dataTables.css" type="text/css" rel="stylesheet">
 
@@ -227,7 +227,8 @@ window.open("bianji3.html")
         $('.qrcode').on('click', function () {
             var productId = $(this).parent().parent().find("td:first-child").html();
             var batch_no =  $(this).parent().parent().find("td").eq(3).html();
-            window.location.href = "bianji3.html?"+productId+"&"+batch_no;
+            var templateName = $(this).parent().parent().find("td").eq(2).html().split(" ")[1];
+            window.location.href = "bianji3.html?"+productId+"&"+batch_no+"&"+templateName;
 
         });
 

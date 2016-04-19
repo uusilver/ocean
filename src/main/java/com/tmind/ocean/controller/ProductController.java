@@ -155,7 +155,12 @@ public class ProductController {
     }
 
     @RequestMapping(value="/createNewProductBatch", method = RequestMethod.POST)
-    public  @ResponseBody String createNewProductBatch(@RequestParam String productId, @RequestParam String batchNo, @RequestParam String batchParams, @RequestParam String sellArthor, HttpServletRequest req){
+    public  @ResponseBody String createNewProductBatch(@RequestParam String productId,
+                                                       @RequestParam String batchNo,
+                                                       @RequestParam String batchParams,
+                                                       @RequestParam String sellArthor,
+                                                       @RequestParam String selectedTemplate,
+                                                       HttpServletRequest req){
         UserProductMetaEntity productMetaInfo = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
         UserProductEntity mUserProductEntity = new UserProductEntity();
         mUserProductEntity.setProduct_id(productMetaInfo.getProduct_id());
@@ -167,6 +172,7 @@ public class ProductController {
         mUserProductEntity.setAdvice_temp(productMetaInfo.getAdvice_temp());
         mUserProductEntity.setBatch_params(batchParams);
         mUserProductEntity.setSellArthor(sellArthor);
+        mUserProductEntity.setAdvice_temp(selectedTemplate);
         if (productService.createNewProductBatch(mUserProductEntity)) {
             return productMetaInfo.getProduct_id();
         }
@@ -290,6 +296,13 @@ public class ProductController {
         return new Gson().toJson(list);
     }
 
+    //获得用户的模版属性
+    @RequestMapping(value="/loadUserAdviceTemplate", method = RequestMethod.GET)
+    public @ResponseBody String loadUserAdviceTemplate(HttpServletRequest request){
+        Integer userId = LoginController.getLoginUserId(request);
+        List<UserAdviceTemplateEntity> adviceTemplates = batchService.queryBatch(userId);
+        return generateOptions("a", adviceTemplates); //设置a,通用模版为默认模版
+    }
 
     //private
     private String strLize(Object obj){
@@ -297,7 +310,21 @@ public class ProductController {
     }
 
 
-
+    //将一个list转换成一个下拉列表框
+    //TODO 变成一个范型通用方法
+    private  String generateOptions(String selectValue, List<UserAdviceTemplateEntity> templates){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<select class='tempClass'>");
+        for(UserAdviceTemplateEntity temp : templates){
+            if(temp.getTemplate_name().equalsIgnoreCase(selectValue)){
+                sb.append(" <option selected=\\\"selected\\\" value="+temp.getTemplate_name()+">"+temp.getTemplate_label()+"</option>");
+            }else{
+                sb.append(" <option value="+temp.getTemplate_name()+">"+temp.getTemplate_label()+"</option>");
+            }
+        }
+        sb.append("</select>");
+        return sb.toString();
+    }
 
 
 

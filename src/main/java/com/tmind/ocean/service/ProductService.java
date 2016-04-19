@@ -203,7 +203,7 @@ public class ProductService {
                 m_user_qrcode_entity.setProduct_id(productEntityFake.getProduct_id());
                 m_user_qrcode_entity.setProduct_batch(productEntityFake.getRelate_batch());
                 //绑定唯一码
-                String qrcodeQueryString = generateQRCodeString(userType);
+                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp());
                 m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);
                 m_user_qrcode_entity.setQuery_match(qrcodeQueryString.split("\\?")[1]);
                 m_user_qrcode_entity.setIp_check_flag("N");
@@ -339,7 +339,7 @@ public class ProductService {
     /*
         @see: user表中的user_type
      */
-    private String generateQRCodeString(String userType){
+    private String generateQRCodeString(String userType, String batchTemplateName){
         //http://localhost:8080/iSearch/index.html?queryid=6ebe7af5-437c-4999-9a1c-84181089889b&uniqueCode=2059467068
         //urlPrefix定义在User表中，用来代表用户的访问路径
         String urlPrefix = userType.split(":")[1];
@@ -351,8 +351,7 @@ public class ProductService {
                 第三个表示，用户的访问模版:y代表柚子，j代表酒，t代表桃子
                 未来要拓展
          */
-        String userTemplatePrefix = userType.split(":")[2];
-        return "http://"+urlPrefix+".315kc.com/m/r/"+userTemplatePrefix+"/i.htm?"+System.currentTimeMillis()+ UniqueKeyGenerator.generateShortUuid();
+        return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+System.currentTimeMillis()+ UniqueKeyGenerator.generateShortUuid();
 
     }
 }

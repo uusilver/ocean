@@ -96,6 +96,15 @@
                             </label></td>
                         </tr>
                         <tr style="border:1px solid #CCCCCC;">
+                            <td style="border:1px solid #CCCCCC;text-align:center;">二维码展示模版</td>
+                            <td><label>
+                                <br/>
+                                <ul id="selectedTemplate">
+                                </ul>
+                                <br/>
+                            </label></td>
+                        </tr>
+                        <tr style="border:1px solid #CCCCCC;">
                             <td style="border:1px solid #CCCCCC;text-align:center;">批次动态参数</td>
                             <td><label>
                                  <ul id="selectedParams">
@@ -147,6 +156,12 @@
             }
            $("#params").html(html);
         });
+
+        //获得用户的扫码模版
+        $.get("../chanpin/loadUserAdviceTemplate",function(data){
+            $("#selectedTemplate").html(data);
+        });
+
         //用户点击添加参数按钮
         $("#addParams").click(function(){
             var selectParamText = $("#params option:selected").text();
@@ -209,6 +224,8 @@
             var productId = $("#product_id").html();
             var productBatch = $("#productBatch").val();
             var sellArthor = $("#sellArthor").val();
+            var selectedTemplate = $("#selectedTemplate select").val();
+
             //检测批次号是否存在
             if(!productBatch){
                 alert("产品批次号不能为空");
@@ -220,7 +237,7 @@
             $.post("../chanpin/checkProductBatchExist",{productId:productId, batchNo:productBatch},function(data){
                 if(data=="success"){
                     //真正的创建产品批次号
-                    createBatchNo(productId, productBatch,paramsContainer, sellArthor);
+                    createBatchNo(productId, productBatch,paramsContainer, sellArthor, selectedTemplate);
                 }else{
                     alert("产品批次号重复，请检测");
                     return false;
@@ -233,7 +250,7 @@
         });
     });
 
-    function createBatchNo(productId, productBatch, batchParams, sellArthor){
+    function createBatchNo(productId, productBatch, batchParams, sellArthor, selectedTemplate){
         $.ajax({
             url:'../chanpin/createNewProductBatch',
             type:"post",
@@ -241,7 +258,8 @@
                 productId:productId,
                 batchNo:productBatch,
                 batchParams:JSON.stringify(batchParams),
-                sellArthor:sellArthor
+                sellArthor:sellArthor,
+                selectedTemplate:selectedTemplate
             },
             success:function(data) {
                 if (data) {
