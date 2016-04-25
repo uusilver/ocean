@@ -24,6 +24,17 @@ import java.util.List;
 @Service("productService")
 public class ProductService {
 
+    private static String pattern = null;
+    private static java.text.DecimalFormat numberFormat = null;
+    private static SimpleDateFormat dateFormat = null;
+
+    static {
+        pattern="000";
+        numberFormat = new java.text.DecimalFormat(pattern);
+        dateFormat = new SimpleDateFormat("yyyyMMdd");
+    }
+
+
     Log log = LogFactory.getLog(ProductService.class);
     //创建产品信息
     public boolean createUserProducet(UserProductMetaEntity productMeta){
@@ -197,13 +208,16 @@ public class ProductService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             Transaction tran=session.beginTransaction();
+            //变量设定
+            String formattedUserId = numberFormat.format(userId);
+            String formattedDate = dateFormat.format(new Date());
             for(int i=0;i<Integer.valueOf(productEntityFake.getQrcode_total_no());i++){
                 UserQrcodeEntity m_user_qrcode_entity = new UserQrcodeEntity();
                 m_user_qrcode_entity.setUser_id(userId);
                 m_user_qrcode_entity.setProduct_id(productEntityFake.getProduct_id());
                 m_user_qrcode_entity.setProduct_batch(productEntityFake.getRelate_batch());
                 //绑定唯一码
-                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp());
+                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate);
                 m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);
                 m_user_qrcode_entity.setQuery_match(qrcodeQueryString.split("\\?")[1]);
                 m_user_qrcode_entity.setIp_check_flag("N");
@@ -339,8 +353,10 @@ public class ProductService {
     /*
         @see: user表中的user_type
      */
-    private String generateQRCodeString(String userType, String batchTemplateName){
-        //http://localhost:8080/iSearch/index.html?queryid=6ebe7af5-437c-4999-9a1c-84181089889b&uniqueCode=2059467068
+    private String generateQRCodeString(String userType, String batchTemplateName,
+                                        String formattedUserId, String formattedDate){
+
+
         //urlPrefix定义在User表中，用来代表用户的访问路径
         String urlPrefix = userType.split(":")[1];
         //urlTemplate定义在User表中，用来代表用户的访问的模版路径
@@ -351,7 +367,8 @@ public class ProductService {
                 第三个表示，用户的访问模版:y代表柚子，j代表酒，t代表桃子
                 未来要拓展
          */
-        return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+System.currentTimeMillis()+ UniqueKeyGenerator.generateShortUuid();
+
+        return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+formattedUserId+formattedDate+ UniqueKeyGenerator.generateShortUuid();
 
     }
 }

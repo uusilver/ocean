@@ -40,7 +40,7 @@ public class LoginFilter implements Filter {
         if (user == null) {
             //打包前一定要改
 //            response.sendRedirect("http://localhost:8080/login.html");
-            response.sendRedirect("login.html");
+            response.sendRedirect("http://www.315kc.com/ocean");
 //            if(path.contains("weblogin")){
 //                response.sendRedirect("../login.html");
 //            }else{

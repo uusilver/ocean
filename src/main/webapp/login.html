@@ -323,23 +323,32 @@
 <script>
 
     $(function () {
+        document.onkeydown = function (event){
+            if (event.keyCode==13) //回车键的键值为13
+                $("#loginIn").trigger("click");
+        };
         //登陆
         $("#loginIn").click(function(){
-            $.post("login/validateJCode",{jCode:$("#j_code").val()},function(data){
-                if(data=="success"){
-                    $("#loginForm").submit();
-                }else{
-                    //显示错误信息
-                    $("#jcodeMsg").html("<span style='color: red; font-weight: bold;'>验证码错误</span>");
-                    //清空
-                    $("#j_code").val('');
-                    //重新生成
-                    $("#kaptchaImage").trigger('click');
-                }
-            })
+            var jcodeVal = $("#j_code").val();
+            if(jcodeVal){
+                $.post("login/validateJCode",{jCode:jcodeVal},function(data){
+                    if(data=="success"){
+                        $("#loginForm").submit();
+                    }else{
+                        //显示错误信息
+                        $("#jcodeMsg").html("<span style='color: red; font-weight: bold;'>验证码错误</span>");
+                        //清空
+                        $("#j_code").val('');
+                        //重新生成
+                        $("#kaptchaImage").trigger('click');
+                    }
+                })
+            }else{
+                alert("请填写验证码");
+            }
         });
 
-        if ($.cookie('absms_crm2_userName') != undefined) {
+        if ($.cookie('315kc_ocean_userName') != undefined) {
             $("#rememberMe").attr("checked", true);
         } else {
             $("#rememberMe").attr("checked", false);
@@ -347,18 +356,18 @@
 
         //读取cookie
         if ($('#rememberMe:checked').length > 0) {
-            $('#userName').val($.cookie('absms_crm2_userName'));
-            $('#password').val($.cookie('absms_crm2_password'));
+            $('#username').val($.cookie('315kc_ocean_userName'));
+            $('#password').val($.cookie('315kc_ocean_password'));
         }
 
         //监听【记住我】事件
         $("#rememberMe").click(function () {
             if ($('#rememberMe:checked').length > 0) {//设置cookie
-                $.cookie('absms_crm2_userName', $('#userName').val());
-                $.cookie('absms_crm2_password', $('#password').val());
+                $.cookie('315kc_ocean_userName', $('#username').val());
+                $.cookie('315kc_ocean_password', $('#password').val());
             } else {//清除cookie
-                $.removeCookie('absms_crm2_userName');
-                $.removeCookie('absms_crm2_password');
+                $.removeCookie('315kc_ocean_userName');
+                $.removeCookie('315kc_ocean_password');
             }
         });
 
