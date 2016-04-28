@@ -216,6 +216,10 @@ public class ProductService {
                 m_user_qrcode_entity.setUser_id(userId);
                 m_user_qrcode_entity.setProduct_id(productEntityFake.getProduct_id());
                 m_user_qrcode_entity.setProduct_batch(productEntityFake.getRelate_batch());
+                //表示是否缓存
+                m_user_qrcode_entity.setCache_flag('Y');
+                //表示是否中奖
+                m_user_qrcode_entity.setLottery_flag('N');
                 //绑定唯一码
                 String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate);
                 m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);

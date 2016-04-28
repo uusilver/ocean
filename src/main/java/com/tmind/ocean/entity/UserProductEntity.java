@@ -28,6 +28,8 @@ public class UserProductEntity {
     private String batch_params;
     @Column(name="sellArthor")
     private String sellArthor;
+    @Column(name="lottery_info")
+    private String lottery_info;
 
 
     public Integer getId() {
@@ -100,5 +102,13 @@ public class UserProductEntity {
 
     public void setSellArthor(String sellArthor) {
         this.sellArthor = sellArthor;
+    }
+
+    public String getLottery_info() {
+        return lottery_info;
+    }
+
+    public void setLottery_info(String lottery_info) {
+        this.lottery_info = lottery_info;
     }
 }

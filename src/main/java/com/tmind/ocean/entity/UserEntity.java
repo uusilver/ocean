@@ -38,6 +38,8 @@ public class UserEntity {
     private String create_date;
     @Column(name="expire_date")
     private String expire_date;
+    @Column(name="lottery_ability_flag")
+    private Character lottery_ability_flag;
 
     public Integer getId() {
         return Id;
@@ -146,6 +148,14 @@ public class UserEntity {
         this.create_date = create_date;
     }
 
+    public Character getLottery_ability_flag() {
+        return lottery_ability_flag;
+    }
+
+    public void setLottery_ability_flag(Character lottery_ability_flag) {
+        this.lottery_ability_flag = lottery_ability_flag;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -159,7 +169,11 @@ public class UserEntity {
                 ", user_factory_name='" + user_factory_name + '\'' +
                 ", user_factory_address='" + user_factory_address + '\'' +
                 ", user_contact_person_name='" + user_contact_person_name + '\'' +
-                ", active_flag='" + active_flag + '\'' +
+                ", active_flag=" + active_flag +
+                ", agency_id=" + agency_id +
+                ", create_date='" + create_date + '\'' +
+                ", expire_date='" + expire_date + '\'' +
+                ", lottery_ability_flag=" + lottery_ability_flag +
                 '}';
     }
 }

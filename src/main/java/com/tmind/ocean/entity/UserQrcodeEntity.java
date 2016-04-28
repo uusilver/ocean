@@ -36,6 +36,14 @@ public class UserQrcodeEntity {
     private String vistor_phy_addr;
     @Column(name="ip_check_flag")
     private String ip_check_flag;
+    @Column(name="cache_flag")
+    private char cache_flag;
+    @Column(name="lottery_flag")
+    private char lottery_flag;
+    @Column(name="lottery_desc")
+    private char lottery_desc;
+    @Column(name="get_lottery_flag")
+    private char get_lottery_flag;
 
     public Integer getId() {
         return Id;
@@ -139,5 +147,37 @@ public class UserQrcodeEntity {
 
     public void setIp_check_flag(String ip_check_flag) {
         this.ip_check_flag = ip_check_flag;
+    }
+
+    public char getCache_flag() {
+        return cache_flag;
+    }
+
+    public void setCache_flag(char cache_flag) {
+        this.cache_flag = cache_flag;
+    }
+
+    public char getLottery_flag() {
+        return lottery_flag;
+    }
+
+    public void setLottery_flag(char lottery_flag) {
+        this.lottery_flag = lottery_flag;
+    }
+
+    public char getLottery_desc() {
+        return lottery_desc;
+    }
+
+    public void setLottery_desc(char lottery_desc) {
+        this.lottery_desc = lottery_desc;
+    }
+
+    public char getGet_lottery_flag() {
+        return get_lottery_flag;
+    }
+
+    public void setGet_lottery_flag(char get_lottery_flag) {
+        this.get_lottery_flag = get_lottery_flag;
     }
 }

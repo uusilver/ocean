@@ -15,6 +15,7 @@ public class UserTo {
     private String user_factory_name;
     private String user_factory_address;
     private String user_contact_person_name;
+    private Character lottery_ability_flag;
 
     public String getUsername() {
         return username;
@@ -94,6 +95,14 @@ public class UserTo {
 
     public void setUser_contact_person_name(String user_contact_person_name) {
         this.user_contact_person_name = user_contact_person_name;
+    }
+
+    public Character getLottery_ability_flag() {
+        return lottery_ability_flag;
+    }
+
+    public void setLottery_ability_flag(Character lottery_ability_flag) {
+        this.lottery_ability_flag = lottery_ability_flag;
     }
 
     @Override

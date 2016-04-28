@@ -140,6 +140,11 @@ public class ProductController {
         }
     }
 
+    @RequestMapping(value = "/queryLotteryFlag", method = RequestMethod.GET)
+    public @ResponseBody String queryLotteryFlag(HttpServletRequest req){
+        return LoginController.getLoginUser(req).getLottery_ability_flag().toString();
+    }
+
     @RequestMapping(value="/updateProductById", method = RequestMethod.POST)
     public  @ResponseBody String updateProductById(UserProductMetaEntity productEntityFake, HttpServletRequest req){
         UserProductMetaEntity realProductEntity = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productEntityFake.getProduct_id());
@@ -160,6 +165,7 @@ public class ProductController {
                                                        @RequestParam String batchParams,
                                                        @RequestParam String sellArthor,
                                                        @RequestParam String selectedTemplate,
+                                                       @RequestParam String lotteryInfo,
                                                        HttpServletRequest req){
         UserProductMetaEntity productMetaInfo = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
         UserProductEntity mUserProductEntity = new UserProductEntity();
@@ -173,6 +179,7 @@ public class ProductController {
         mUserProductEntity.setBatch_params(batchParams);
         mUserProductEntity.setSellArthor(sellArthor);
         mUserProductEntity.setAdvice_temp(selectedTemplate);
+        mUserProductEntity.setLottery_info(lotteryInfo);
         if (productService.createNewProductBatch(mUserProductEntity)) {
             return productMetaInfo.getProduct_id();
         }
