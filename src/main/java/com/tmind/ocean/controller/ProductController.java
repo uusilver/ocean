@@ -179,7 +179,11 @@ public class ProductController {
         mUserProductEntity.setBatch_params(batchParams);
         mUserProductEntity.setSellArthor(sellArthor);
         mUserProductEntity.setAdvice_temp(selectedTemplate);
-        mUserProductEntity.setLottery_info(lotteryInfo);
+        //处理中奖信息
+        /**
+         * @see processLotteryInfo;
+         */
+        mUserProductEntity.setLottery_info(processLotteryInfo(lotteryInfo));
         if (productService.createNewProductBatch(mUserProductEntity)) {
             return productMetaInfo.getProduct_id();
         }
@@ -333,7 +337,53 @@ public class ProductController {
         return sb.toString();
     }
 
+    //生成最终调用的中奖信息
 
+    /*
+        因为中奖可以定义中奖概率，因此在这里要将中奖概率进行统一
+        同时要设置好奖项区间，以及对应的中奖类别
+     */
+    public String processLotteryInfo(String originalLotteryInfo){
+        //数据按&nbsp;分开
+        //一等奖:1/10000&nbsp;二等奖:4/10000&nbsp;
+
+        String[] lotteryInfoPool = originalLotteryInfo.split("&nbsp;");
+        StringBuilder sb = new StringBuilder(originalLotteryInfo.length());
+        //找出最小中奖率
+        int minLotteryRate = 0;
+        try{
+            for(int i =0; i<lotteryInfoPool.length; i++){
+                int currentRate = Integer.valueOf(lotteryInfoPool[i].split("\\:")[1].split("\\/")[1]); //一等奖:1/10000
+                if(currentRate>minLotteryRate)
+                    minLotteryRate = currentRate;
+            }
+            //获得了最低的中奖率，需要统一中奖率
+            int luckMinRange = 0;
+            for(int i =0; i<lotteryInfoPool.length; i++){
+                String currentLotteryDesc = lotteryInfoPool[i].split("\\:")[0]; //获得中奖信息
+                int currentRate = Integer.valueOf(lotteryInfoPool[i].split("\\:")[1].split("\\/")[1]); //获得当前的中奖率
+                int currentLuckNumber = Integer.valueOf(lotteryInfoPool[i].split("\\:")[1].split("\\/")[0]); //获得当前的中奖数量
+                int times = minLotteryRate/currentRate; //1000/100 = 10, then
+                int luckMaxRange  =  currentLuckNumber* times;
+                String luckRangeInfo = Integer.toString(luckMinRange)+"-"+luckMaxRange;
+                if(i==lotteryInfoPool.length-1){
+                    sb.append( currentLotteryDesc +":"+ luckRangeInfo);
+
+                }else{
+                    sb.append( currentLotteryDesc +":"+ luckRangeInfo + "&");
+                }
+                luckMinRange = luckMaxRange;
+
+            }
+
+            sb.append("|"+minLotteryRate);
+
+            return sb.toString();
+        }catch (Exception e){
+            return null;
+        }
+
+    }
 
 }
 

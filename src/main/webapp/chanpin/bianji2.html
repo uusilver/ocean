@@ -121,7 +121,14 @@
                                 </div>
                                     <input type="text" id="lotteryDesc" placeholder="输入中奖内容" size="10"/>
                                     <input type="number" id="lotteryNum"  placeholder="输入中奖个数" size="2"/>
-                                    <button id="addLotteryInfo" class='icon-plus-mini'></button>
+                                    <select id="lotteryRate">
+                                        <option value="100">每100(一百)中奖数</option>
+                                        <option value="1000">每1000(一千)中奖数</option>
+                                        <option value="10000" selected>每100000(一万)中奖数</option>
+                                        <option value="100000">每100000(十万)中奖数</option>
+                                        <option value="1000000">每1000000(百百)中奖数</option>
+                                    </select>
+                                    <button id="addLotteryInfo">添加</button>
                             </label></td>
                         </tr>
                         <!--<tr style="border:1px solid #CCCCCC;">-->
@@ -155,18 +162,32 @@
 <script>
     $(function(){
         //判断用户是否有权限进行抽奖活动
+        var lotteryPool = [];
         $.get("../chanpin/queryLotteryFlag", function(data) {
             if(data == 'Y'){
                 //点击后增加中奖信息
                 $("#addLotteryInfo").click(function(){
                     var lotteryDesc = $("#lotteryDesc").val();
                     var lotteryNum = $("#lotteryNum").val();
+                    var lotteryRate = $("#lotteryRate option:selected").val();
                     if(lotteryDesc.length>0 && lotteryNum.length>0){
                         if(lotteryNum<=0){
                             alert("中奖数不合法");
                             return false;
                         }
-                        $("#lotteryInfo").append("<div>"+lotteryDesc +":"+ lotteryNum +"&nbsp;<a class='deleteLottery'>删除</a></div>");
+
+                        //判断奖项是否被重复添加过
+                        var flag = true;
+                        for(var i=0;i<lotteryPool.length;i++){
+                            if(lotteryDesc == lotteryPool[i]){
+                                flag = false;
+                                alert("您已经添加过该奖项，不可重复添加");
+                                break;
+                            }
+                        }
+                        if(flag)
+                            $("#lotteryInfo").append("<div>"+lotteryDesc +":"+ lotteryNum+"/"+lotteryRate +"&nbsp;<a class='deleteLottery'>删除</a></div>");
+                            lotteryPool.push(lotteryDesc);
                     }else{
                         alert("请输入内容");
                         return false;
@@ -239,7 +260,15 @@
         });
         //删除中奖信息
         $("body").on('click','.deleteLottery',function(){
-
+            var deleteItem = $(this).parent().html().split(":")[0].replace("<div>");
+            var tempLotteryContainer = [];
+            for(var i=0;i<lotteryPool.length;i++){
+                if(deleteItem != lotteryPool[i]){
+                    tempLotteryContainer.push(lotteryPool[i]);
+                }
+            }
+            //重新建立新的参数容器
+            lotteryPool = tempLotteryContainer;
             $(this).parent().remove();
         });
 
