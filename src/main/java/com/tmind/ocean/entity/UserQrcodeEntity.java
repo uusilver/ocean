@@ -44,6 +44,10 @@ public class UserQrcodeEntity {
     private char lottery_desc;
     @Column(name="get_lottery_flag")
     private char get_lottery_flag;
+    @Column(name="delete_flag")
+    private char delete_flag;
+    @Column(name="lottery_check_flag")
+    private char lottery_check_flag;
 
     public Integer getId() {
         return Id;
@@ -179,5 +183,21 @@ public class UserQrcodeEntity {
 
     public void setGet_lottery_flag(char get_lottery_flag) {
         this.get_lottery_flag = get_lottery_flag;
+    }
+
+    public char getDelete_flag() {
+        return delete_flag;
+    }
+
+    public void setDelete_flag(char delete_flag) {
+        this.delete_flag = delete_flag;
+    }
+
+    public char getLottery_check_flag() {
+        return lottery_check_flag;
+    }
+
+    public void setLottery_check_flag(char lottery_check_flag) {
+        this.lottery_check_flag = lottery_check_flag;
     }
 }

@@ -65,7 +65,8 @@ public class BatchController {
                         strLize(batchModel.get(i).getQrTotalNo()),
                         strLize(batchModel.get(i).getUpdateTime()),
                         strLize(getBatchParams(batchModel.get(i).getParams(),batchModel.get(i).getSellArthor())),
-                        "<button class=\"export\">导出旧品牌码</button><button class=\"qrcode\">创建新品牌码</button><button class=\"delete\">删除</button>"
+//                        "<button class=\"export\">导出旧品牌码</button><button class=\"qrcode\">创建新品牌码</button><button class=\"delete\">清空二维码</button>"
+                        "<button class=\"export\">导出旧品牌码</button><button class=\"qrcode\">创建新品牌码</button>"
                 };
 
                 lst.add(d);

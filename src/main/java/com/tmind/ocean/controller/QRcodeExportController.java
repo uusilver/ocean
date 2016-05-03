@@ -125,6 +125,7 @@ public class QRcodeExportController {
         return list4PrintModel;
     }
 
+    //重新导出二维码
     private List<QrCodeExportModelTo> createReExportData(Integer userId, String productId, String batchId) {
         //查询具体的二维码
         List<UserQrcodeEntity> list = qrCodeService.queryQrCodeForReExport(userId,productId,batchId);

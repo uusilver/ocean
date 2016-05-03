@@ -227,8 +227,10 @@ public class ProductService {
                 m_user_qrcode_entity.setIp_check_flag("N");
                 m_user_qrcode_entity.setQuery_times(0);
                 m_user_qrcode_entity.setActive_flag("Y");
+                m_user_qrcode_entity.setLottery_check_flag('N');
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 m_user_qrcode_entity.setCreate_date(sdf.format(new Date()));
+                m_user_qrcode_entity.setDelete_flag('N');
                 session.save(m_user_qrcode_entity);
                 if( i % 50 == 0 ) { // Same as the JDBC batch size
                     //flush a batch of inserts and release memory:

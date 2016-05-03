@@ -135,18 +135,14 @@ public class BatchService {
         return 0;
     }
 
+    //删除
     public boolean deleteQrCodes(Integer userId, String productId, String batchNo){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction trans = session.beginTransaction();
-            String hql = "delete UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.product_id=:productId and UserQrcodeEntity.product_batch=:batchNo";
+            //update  UserQrcodeEntity m set m.active_flag='N' where m.user_id=:userId and m.product_id=:productId
+            String hql = "update UserQrcodeEntity m set m.delete_flag='Y' where m.user_id=:userId and m.product_id=:productId and m.product_batch=:batchNo";
             Query query = session.createQuery(hql);
-            query.setInteger("userId", userId);
-            query.setString("productId", productId);
-            query.setString("batchNo",batchNo);
-            query.executeUpdate();
-            hql = "delete UserProductEntity as UserProductEntity where UserProductEntity.user_id=:userId and UserProductEntity.product_id=:productId and UserProductEntity.relate_batch=:batchNo";
-            query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId", productId);
             query.setString("batchNo",batchNo);

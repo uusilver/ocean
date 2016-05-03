@@ -26,7 +26,7 @@ public class QrCodeService {
         List<UserQrcodeEntity> list = null;
         Transaction trans = session.beginTransaction();
         try {
-            String hql = "from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.product_id=:productId and UserQrcodeEntity.product_batch=:batchId and UserQrcodeEntity.active_flag='Y'";//使用命名参数，推荐使用，易读。
+            String hql = "from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.product_id=:productId and UserQrcodeEntity.product_batch=:batchId and UserQrcodeEntity.active_flag='Y' and UserQrcodeEntity.delete_flag='N'";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId",procutId);
@@ -52,7 +52,7 @@ public class QrCodeService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<UserQrcodeEntity> list = null;
         try {
-            String hql = "from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.product_id=:productId and UserQrcodeEntity.product_batch=:batchId and UserQrcodeEntity.active_flag='N'";//使用命名参数，推荐使用，易读。
+            String hql = "from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.product_id=:productId and UserQrcodeEntity.product_batch=:batchId and UserQrcodeEntity.active_flag='N' and UserQrcodeEntity.delete_flag='N'";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setString("productId",procutId);
@@ -110,7 +110,7 @@ public class QrCodeService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<UserQrcodeEntity> list = null;
         try {
-            String hql = "from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.query_times>0";//使用命名参数，推荐使用，易读。
+            String hql = "from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.query_times>0 and UserQrcodeEntity.delete_flag='N'";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             query.setFirstResult(firstRecord);
@@ -128,7 +128,7 @@ public class QrCodeService {
     public Integer getQrcodeTotalNo(Integer userId){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "select count(UserQrcodeEntity .id) from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId";//使用命名参数，推荐使用，易读。
+            String hql = "select count(UserQrcodeEntity .id) from UserQrcodeEntity as UserQrcodeEntity where UserQrcodeEntity.user_id=:userId and UserQrcodeEntity.delete_flag='N'";//使用命名参数，推荐使用，易读。
             Query query = session.createQuery(hql);
             query.setInteger("userId", userId);
             return ((Number) query.iterate().next()).intValue();
