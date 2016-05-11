@@ -166,6 +166,8 @@ public class ProductController {
                                                        @RequestParam String sellArthor,
                                                        @RequestParam String selectedTemplate,
                                                        @RequestParam String lotteryInfo,
+                                                       @RequestParam String productPrice,
+                                                       @RequestParam String productAddress,
                                                        HttpServletRequest req){
         UserProductMetaEntity productMetaInfo = productService.queryProductInfoById(LoginController.getLoginUser(req).getUserId(),productId);
         UserProductEntity mUserProductEntity = new UserProductEntity();
@@ -179,6 +181,8 @@ public class ProductController {
         mUserProductEntity.setBatch_params(batchParams);
         mUserProductEntity.setSellArthor(sellArthor);
         mUserProductEntity.setAdvice_temp(selectedTemplate);
+        mUserProductEntity.setSellPrice(productPrice);
+        mUserProductEntity.setProductAddress(productAddress);
         //处理中奖信息
         /**
          * @see processLotteryInfo;

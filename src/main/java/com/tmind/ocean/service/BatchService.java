@@ -87,6 +87,8 @@ public class BatchService {
                 b.setQrTotalNo(m.getQrcode_total_no());
                 b.setUpdateTime(m.getUpdate_time());
                 b.setSellArthor(m.getSellArthor());
+                b.setSellPrice(m.getSellPrice());
+                b.setProductAddress(m.getProductAddress());
                 //去掉json的包装符号
                 b.setParams(m.getBatch_params().replaceAll("\\[","").replaceAll("\\]", "").replaceAll("\"",""));
                 list.add(b);

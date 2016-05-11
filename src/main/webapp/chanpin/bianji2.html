@@ -96,6 +96,18 @@
                             </label></td>
                         </tr>
                         <tr style="border:1px solid #CCCCCC;">
+                            <td style="border:1px solid #CCCCCC;text-align:center;">产品价格</td>
+                            <td><label>
+                                <input name="textfield" id="productPrice" type="text" required value="">
+                            </label></td>
+                        </tr>
+                        <tr style="border:1px solid #CCCCCC;">
+                            <td style="border:1px solid #CCCCCC;text-align:center;">产品购买页面(可不填)</td>
+                            <td><label>
+                                <input name="textfield" id="productAddress" type="text" required value="">
+                            </label></td>
+                        </tr>
+                        <tr style="border:1px solid #CCCCCC;">
                             <td style="border:1px solid #CCCCCC;text-align:center;">二维码展示模版</td>
                             <td><label>
                                 <br/>
@@ -302,6 +314,9 @@
             var productBatch = $("#productBatch").val();
             var sellArthor = $("#sellArthor").val();
             var selectedTemplate = $("#selectedTemplate select").val();
+            var productPrice = $("#productPrice").val();
+            var productAddress = $("#productAddress").val();
+
 
             //检测批次号是否存在
             if(!productBatch){
@@ -314,7 +329,7 @@
             $.post("../chanpin/checkProductBatchExist",{productId:productId, batchNo:productBatch},function(data){
                 if(data=="success"){
                     //真正的创建产品批次号
-                    createBatchNo(productId, productBatch,paramsContainer, sellArthor, selectedTemplate, preparedLotteryInfo);
+                    createBatchNo(productId, productBatch,paramsContainer, sellArthor, selectedTemplate, preparedLotteryInfo, productPrice, productAddress);
                 }else{
                     alert("产品批次号重复，请检测");
                     return false;
@@ -327,7 +342,7 @@
         });
     });
 
-    function createBatchNo(productId, productBatch, batchParams, sellArthor, selectedTemplate, preparedLotteryInfo){
+    function createBatchNo(productId, productBatch, batchParams, sellArthor, selectedTemplate, preparedLotteryInfo, productPrice, productAddress){
         $.ajax({
             url:'../chanpin/createNewProductBatch',
             type:"post",
@@ -337,7 +352,9 @@
                 batchParams:JSON.stringify(batchParams),
                 sellArthor:sellArthor,
                 selectedTemplate:selectedTemplate,
-                lotteryInfo:preparedLotteryInfo
+                lotteryInfo:preparedLotteryInfo,
+                productPrice:productPrice,
+                productAddress:productAddress
             },
             success:function(data) {
                 if (data) {

@@ -30,7 +30,10 @@ public class UserProductEntity {
     private String sellArthor;
     @Column(name="lottery_info")
     private String lottery_info;
-
+    @Column(name="sellPrice")
+    private String sellPrice;
+    @Column(name="productAddress")
+    private String productAddress;
 
     public Integer getId() {
         return Id;
@@ -110,5 +113,21 @@ public class UserProductEntity {
 
     public void setLottery_info(String lottery_info) {
         this.lottery_info = lottery_info;
+    }
+
+    public String getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(String sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public String getProductAddress() {
+        return productAddress;
+    }
+
+    public void setProductAddress(String productAddress) {
+        this.productAddress = productAddress;
     }
 }

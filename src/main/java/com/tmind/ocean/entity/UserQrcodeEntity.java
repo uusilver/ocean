@@ -41,7 +41,7 @@ public class UserQrcodeEntity {
     @Column(name="lottery_flag")
     private char lottery_flag;
     @Column(name="lottery_desc")
-    private char lottery_desc;
+    private String lottery_desc;
     @Column(name="get_lottery_flag")
     private char get_lottery_flag;
     @Column(name="delete_flag")
@@ -169,11 +169,11 @@ public class UserQrcodeEntity {
         this.lottery_flag = lottery_flag;
     }
 
-    public char getLottery_desc() {
+    public String getLottery_desc() {
         return lottery_desc;
     }
 
-    public void setLottery_desc(char lottery_desc) {
+    public void setLottery_desc(String lottery_desc) {
         this.lottery_desc = lottery_desc;
     }
 

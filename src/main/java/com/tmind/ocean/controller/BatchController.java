@@ -62,6 +62,9 @@ public class BatchController {
                         strLize(batchModel.get(i).getProductName()),
                         generateTemplate4Display(batchModel.get(i).getAdviceTemplate(), adviceTemplates),
                         strLize(batchModel.get(i).getBatchNo()),
+                        strLize(batchModel.get(i).getSellPrice()),
+                        strLize(batchModel.get(i).getProductAddress()),
+
                         strLize(batchModel.get(i).getQrTotalNo()),
                         strLize(batchModel.get(i).getUpdateTime()),
                         strLize(getBatchParams(batchModel.get(i).getParams(),batchModel.get(i).getSellArthor())),

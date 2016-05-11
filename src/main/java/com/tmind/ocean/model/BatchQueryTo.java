@@ -13,6 +13,9 @@ public class BatchQueryTo {
     private String updateTime;
     private String params;
     private String sellArthor;
+    private String sellPrice;
+    private String productAddress;
+
 
     public String getProductId() {
         return productId;
@@ -84,5 +87,21 @@ public class BatchQueryTo {
 
     public void setSellArthor(String sellArthor) {
         this.sellArthor = sellArthor;
+    }
+
+    public String getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(String sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public String getProductAddress() {
+        return productAddress;
+    }
+
+    public void setProductAddress(String productAddress) {
+        this.productAddress = productAddress;
     }
 }
