@@ -175,6 +175,7 @@ public class LoginController {
         userTo.setUser_factory_address(userEntity.getUser_factory_address());
         userTo.setUser_contact_person_name(userEntity.getUser_contact_person_name());
         userTo.setLottery_ability_flag(userEntity.getLottery_ability_flag());
+        userTo.setUser_telno(userEntity.getUser_telno());
         return userTo;
     }
 

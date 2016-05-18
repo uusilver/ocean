@@ -87,6 +87,24 @@
     <td><input type="text" name="product_desc"  id="product_desc" style="width:490px;"/>
     </td>
   </tr>
+
+        <tr>
+            <td style="text-align:center;border:1px solid #CCCCCC; ">产品生产地址</td>
+            <td><input type="text" name="product_address"  id="product_address" style="width:490px;"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:center;border:1px solid #CCCCCC; ">联系电话</td>
+            <td><input type="text" name="tel_no"  id="tel_no" style="width:490px;"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:center;border:1px solid #CCCCCC; ">产品厂家</td>
+            <td><input type="text" name="product_factory"  id="product_factory" style="width:490px;"/>
+            </td>
+        </tr>
   <tr>
     <td>&nbsp;</td>
     <td> <button id="updateProduct" type="button" class="button button-primary" style=" margin-top:10px;margin-bottom:10px;">提交</button>
@@ -94,6 +112,7 @@
 	</td>
 
   </tr>
+
 </table>
         </form>
 	</div> 
@@ -122,6 +141,9 @@
             $("#product_name").val(jsonData.product_name);
             $("#product_desc").val(jsonData.product_desc);
             $("#product_category").val(jsonData.product_category);
+            $("#product_address").val(jsonData.product_address);
+            $("#tel_no").val(jsonData.tel_no);
+            $("#product_factory").val(jsonData.product_factory);
             id = jsonData.Id;
         });
 
@@ -131,14 +153,18 @@
             var productName = $("#product_name").val();
             var productDesc = $("#product_desc").val();
             var category = $("#product_category").find("option:selected").text();
+            var product_address = $("#product_address").val();
+            var tel_no = $("#tel_no").val();
+            var product_factory = $("#product_factory").val();
+
             //产品名称未改变，直接提交修改
             if(originProductName == productName){
-                realUpdateProductFunc(id, prodcutId, productName, category, productDesc);
+                realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory);
             }else{
                 //检测产品名是否重复
                 $.post("../chanpin/checkProductNameExisted",{productName:productName},function(data){
                     if(data == "success"){
-                        realUpdateProductFunc(id, prodcutId, productName, category, productDesc);
+                        realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory);
                     }else{
                         alert("产品名已经存在，请更换");
                         return false;
@@ -154,7 +180,7 @@
         })
     });
 
-    function realUpdateProductFunc(id, prodcutId, productName, category, productDesc){
+    function realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory){
         $.ajax({
             url:'../chanpin/updateProductById',
             type:"post",
@@ -163,7 +189,10 @@
                 product_id:prodcutId,
                 product_name:productName,
                 product_category:category,
-                product_desc:productDesc
+                product_desc:productDesc,
+                product_address:product_address,
+                tel_no:tel_no,
+                product_factory:product_factory
             },
             success:function(data) {
                 if (data == "success") {

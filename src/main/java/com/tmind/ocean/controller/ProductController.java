@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,15 @@ public class ProductController {
         product.setQrcode_total_no(0);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         product.setUpdate_time(sdf.format(new Date()));
+        if(product.getProduct_address().length()<=0){
+            product.setProduct_address(user.getUser_factory_address());
+        }
+        if(product.getProduct_factory().length()<=0){
+            product.setProduct_factory(user.getUser_factory_name());
+        }
+        if(product.getTel_no().length()<=0){
+            product.setTel_no(user.getUser_telno());
+        }
         productService.createUserProducet(product);
         System.out.println("新产品创建成功");
         return "chanpin/code";
@@ -151,6 +161,9 @@ public class ProductController {
         realProductEntity.setProduct_name(productEntityFake.getProduct_name());
         realProductEntity.setProduct_category(productEntityFake.getProduct_category());
         realProductEntity.setProduct_desc(productEntityFake.getProduct_desc());
+        realProductEntity.setProduct_address(productEntityFake.getProduct_address());
+        realProductEntity.setTel_no(productEntityFake.getTel_no());
+        realProductEntity.setProduct_factory(productEntityFake.getProduct_factory());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         realProductEntity.setUpdate_time(sdf.format(new Date()));
         if (productService.updateProductById(realProductEntity))

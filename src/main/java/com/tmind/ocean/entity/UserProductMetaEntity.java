@@ -28,6 +28,12 @@ public class UserProductMetaEntity {
     private String product_id;
     @Column(name="advice_temp")
     private String advice_temp;
+    @Column(name="product_address")
+    private String product_address;
+    @Column(name="tel_no")
+    private String tel_no;
+    @Column(name="product_factory")
+    private String product_factory;
 
 
 
@@ -103,4 +109,27 @@ public class UserProductMetaEntity {
         this.advice_temp = advice_temp;
     }
 
+    public String getProduct_address() {
+        return product_address;
+    }
+
+    public void setProduct_address(String product_address) {
+        this.product_address = product_address;
+    }
+
+    public String getTel_no() {
+        return tel_no;
+    }
+
+    public void setTel_no(String tel_no) {
+        this.tel_no = tel_no;
+    }
+
+    public String getProduct_factory() {
+        return product_factory;
+    }
+
+    public void setProduct_factory(String product_factory) {
+        this.product_factory = product_factory;
+    }
 }
