@@ -62,11 +62,11 @@ public class SecurityUtil {
     }
 
     public static void main(String args[]){
-        String password = "password";
-        System.out.println(SecurityUtil.encodeWithMd5Hash(password));
-        String encodeStr = SecurityUtil.encodeWithBase64(password);
-        System.out.println(encodeStr);
-        System.out.println(SecurityUtil.decodeStringWithBase64(encodeStr));
+        String password = "315kc01";
+        System.out.println("md5:"+SecurityUtil.encodeWithMd5Hash(password));
+//        String encodeStr = SecurityUtil.encodeWithBase64(password);
+//        System.out.println(encodeStr);
+//        System.out.println(SecurityUtil.decodeStringWithBase64(encodeStr));
 
     }
 }

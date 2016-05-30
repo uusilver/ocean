@@ -123,7 +123,11 @@
     <script type="text/javascript" src="../js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="../js/data.table.translation.js"></script>
 
+    <script type="text/javascript" src="full-text/scripts/jquery-ui-1.7.2.custom.min.js"></script>
+    <link rel="Stylesheet" type="text/css" href="full-text/style/jqueryui/ui-lightness/jquery-ui-1.7.2.custom.css" />
 
+    <script type="text/javascript" src="full-text/scripts/jHtmlArea-0.8.js"></script>
+    <link rel="Stylesheet" type="text/css" href="full-text/style/jHtmlArea.css" />
 
 </head>
 <body>
@@ -174,9 +178,16 @@
 
                 <tr>
                     <td style="text-align:center;border:1px solid #CCCCCC; ">产品说明</td>
-                    <td><input type="text" name="product_desc" id="product_desc" style="width:490px;"/>
+                    <td><textarea type="text" name="product_desc" id="product_desc" style="width:490px; height: 500px"></textarea>
                     </td>
                 </tr>
+
+                <tr>
+                    <td style="text-align:center;border:1px solid #CCCCCC; ">是否显示产品说明</td>
+                    <td><input id="show_desc" name="show_desc" type="checkbox" value="Y" />显示
+                    </td>
+                </tr>
+
                 <tr>
                     <td style="text-align:center;border:1px solid #CCCCCC; ">产品生产地址</td>
                     <td><input type="text" name="product_address"  id="product_address" style="width:490px;"/>
@@ -238,7 +249,7 @@
 
 <script>
     $(function () {
-
+        $("#product_desc").htmlarea();
         //加载dropdownlist
         $.get("../categoryController/queryCategory", function (data){
             var jsonData = JSON.parse(data);

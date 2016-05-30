@@ -34,7 +34,8 @@ public class UserProductMetaEntity {
     private String tel_no;
     @Column(name="product_factory")
     private String product_factory;
-
+    @Column(name="show_desc")
+    private char show_desc;
 
 
     public Integer getId() {
@@ -131,5 +132,13 @@ public class UserProductMetaEntity {
 
     public void setProduct_factory(String product_factory) {
         this.product_factory = product_factory;
+    }
+
+    public char getShow_desc() {
+        return show_desc;
+    }
+
+    public void setShow_desc(char show_desc) {
+        this.show_desc = show_desc;
     }
 }

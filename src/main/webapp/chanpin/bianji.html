@@ -13,14 +13,22 @@
   <link href="../main/css/jquery.dataTables.css" type="text/css" rel="stylesheet">
 
 
+
      <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="../umeditor/umeditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="../umeditor/umeditor.min.js"></script>
     <script type="text/javascript" src="../umeditor/lang/zh-cn/zh-cn.js"></script>
 
+     <script type="text/javascript" src="full-text/scripts/jquery-ui-1.7.2.custom.min.js"></script>
+     <link rel="Stylesheet" type="text/css" href="full-text/style/jqueryui/ui-lightness/jquery-ui-1.7.2.custom.css" />
+
+     <script type="text/javascript" src="full-text/scripts/jHtmlArea-0.8.js"></script>
+     <link rel="Stylesheet" type="text/css" href="full-text/style/jHtmlArea.css" />
+
+
    <style type="text/css">
     code {
-      padding: 0px 4px;
+      padding: 0px 4px;88999999999
       color: #d14;
       background-color: #f7f7f9;
       border: 1px solid #e1e1e8;
@@ -82,11 +90,18 @@
     </td>
   </tr>
 
-  <tr>
-    <td style="text-align:center;border:1px solid #CCCCCC; ">产品说明</td>
-    <td><input type="text" name="product_desc"  id="product_desc" style="width:490px;"/>
-    </td>
-  </tr>
+        <tr>
+            <td style="text-align:center;border:1px solid #CCCCCC; ">产品说明</td>
+            <td><textarea type="text" name="product_desc" id="product_desc" style="width:490px; height: 500px"></textarea>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:center;border:1px solid #CCCCCC; ">是否显示产品说明</td>
+            <td><input id="showDesc" name="showDesc" type="checkbox" value="yes" />显示
+            </td>
+        </tr>
+
 
         <tr>
             <td style="text-align:center;border:1px solid #CCCCCC; ">产品生产地址</td>
@@ -121,6 +136,10 @@
 
 <script>
     $(function(){
+
+        $("#product_desc").htmlarea();
+
+
         var id;
         var originProductName;
         //加载dropdownlist
@@ -139,11 +158,14 @@
             //初始化产品名
             originProductName = jsonData.product_name;
             $("#product_name").val(jsonData.product_name);
-            $("#product_desc").val(jsonData.product_desc);
+            $("#product_desc").text(jsonData.product_desc);
             $("#product_category").val(jsonData.product_category);
             $("#product_address").val(jsonData.product_address);
             $("#tel_no").val(jsonData.tel_no);
             $("#product_factory").val(jsonData.product_factory);
+            //选中
+            if(jsonData.show_desc == "Y")
+                    $("#showDesc").attr("checked", true);
             id = jsonData.Id;
         });
 
@@ -156,15 +178,21 @@
             var product_address = $("#product_address").val();
             var tel_no = $("#tel_no").val();
             var product_factory = $("#product_factory").val();
-
+            var show_desc_checkbox = $("#showDesc").attr('value');
+            var show_desc;
+            if(show_desc_checkbox == "yes"){
+                show_desc = "Y";
+            }else{
+                show_desc = "N";
+            }
             //产品名称未改变，直接提交修改
             if(originProductName == productName){
-                realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory);
+                realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory, show_desc);
             }else{
                 //检测产品名是否重复
                 $.post("../chanpin/checkProductNameExisted",{productName:productName},function(data){
                     if(data == "success"){
-                        realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory);
+                        realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory, show_desc);
                     }else{
                         alert("产品名已经存在，请更换");
                         return false;
@@ -180,7 +208,7 @@
         })
     });
 
-    function realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory){
+    function realUpdateProductFunc(id, prodcutId, productName, category, productDesc, product_address, tel_no, product_factory, show_desc){
         $.ajax({
             url:'../chanpin/updateProductById',
             type:"post",
@@ -192,7 +220,8 @@
                 product_desc:productDesc,
                 product_address:product_address,
                 tel_no:tel_no,
-                product_factory:product_factory
+                product_factory:product_factory,
+                show_desc:show_desc
             },
             success:function(data) {
                 if (data == "success") {

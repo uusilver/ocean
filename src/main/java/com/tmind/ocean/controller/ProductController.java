@@ -56,6 +56,9 @@ public class ProductController {
         if(product.getTel_no().length()<=0){
             product.setTel_no(user.getUser_telno());
         }
+        if(product.getShow_desc() != 'Y'){
+            product.setShow_desc('N');
+        }
         productService.createUserProducet(product);
         System.out.println("新产品创建成功");
         return "chanpin/code";
@@ -164,6 +167,7 @@ public class ProductController {
         realProductEntity.setProduct_address(productEntityFake.getProduct_address());
         realProductEntity.setTel_no(productEntityFake.getTel_no());
         realProductEntity.setProduct_factory(productEntityFake.getProduct_factory());
+        realProductEntity.setShow_desc(productEntityFake.getShow_desc());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         realProductEntity.setUpdate_time(sdf.format(new Date()));
         if (productService.updateProductById(realProductEntity))
