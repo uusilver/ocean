@@ -60,7 +60,12 @@ public class LoginController {
             } else {
                 prepareUserTo(userEntity, userTo);
                 req.getSession().setAttribute("userInSession", userTo);
-                return new ModelAndView("index", model);
+                String home = userEntity.getHome_page();
+                if(home ==null || home.length()==0)
+                    return new ModelAndView("redirect:index.html", model);
+                else
+                    return new ModelAndView("redirect:"+home, model);
+
             }
         } else {
             model.put("error", "用户名或密码错误");

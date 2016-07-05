@@ -40,6 +40,8 @@ public class UserEntity {
     private String expire_date;
     @Column(name="lottery_ability_flag")
     private Character lottery_ability_flag;
+    @Column(name="home_page")
+    private String home_page;
 
     public Integer getId() {
         return Id;
@@ -154,6 +156,14 @@ public class UserEntity {
 
     public void setLottery_ability_flag(Character lottery_ability_flag) {
         this.lottery_ability_flag = lottery_ability_flag;
+    }
+
+    public String getHome_page() {
+        return home_page;
+    }
+
+    public void setHome_page(String home_page) {
+        this.home_page = home_page;
     }
 
     @Override

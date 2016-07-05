@@ -53,6 +53,7 @@
         <property name="suffix" value=".html"/>
     </bean>
 
+
     <bean id="exceptionResolver" class="com.tmind.ocean.exception.ExceptionHandler"/>
 
     <!-- Spring定时器注解开关-->

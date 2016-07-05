@@ -61,6 +61,11 @@
 		<url-pattern>*.ico</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.swf</url-pattern>
+	</servlet-mapping>
+
 	<!-- Login Filter -->
 	<filter>
 		<filter-name>login</filter-name>

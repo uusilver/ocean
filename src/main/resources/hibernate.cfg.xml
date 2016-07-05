@@ -39,6 +39,7 @@
         <mapping class="com.tmind.ocean.entity.ProductShowInfoEntity" />
         <mapping class="com.tmind.ocean.entity.UserParamsEntity" />
         <mapping class="com.tmind.ocean.entity.AgentUser" />
+        <mapping class="com.tmind.ocean.entity.CustTileShTable" />
 
 
 
