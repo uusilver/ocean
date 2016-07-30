@@ -204,7 +204,7 @@ public class ProductService {
         return true;
     }
 
-    public boolean createQrcode(UserProductEntity productEntityFake, Integer userId, String userType){
+    public boolean createQrcode(UserProductEntity productEntityFake, Integer userId, String userType, String sequenceNo){
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             Transaction tran=session.beginTransaction();
@@ -221,7 +221,7 @@ public class ProductService {
                 //表示是否中奖
                 m_user_qrcode_entity.setLottery_flag('N');
                 //绑定唯一码
-                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate);
+                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate, sequenceNo);
                 m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);
                 m_user_qrcode_entity.setQuery_match(qrcodeQueryString.split("\\?")[1]);
                 m_user_qrcode_entity.setIp_check_flag("N");
@@ -360,9 +360,11 @@ public class ProductService {
         @see: user表中的user_type
      */
     private String generateQRCodeString(String userType, String batchTemplateName,
-                                        String formattedUserId, String formattedDate){
+                                        String formattedUserId, String formattedDate, String sequenceNo){
 
-
+        /*
+            sequenceNo:代表生成的二维码是否要增加序列，用来区分不同批次的二维码顺序
+         */
         //urlPrefix定义在User表中，用来代表用户的访问路径
         String urlPrefix = userType.split(":")[1];
         //urlTemplate定义在User表中，用来代表用户的访问的模版路径
@@ -373,8 +375,12 @@ public class ProductService {
                 第三个表示，用户的访问模版:y代表柚子，j代表酒，t代表桃子
                 未来要拓展
          */
+        if(sequenceNo!=null && sequenceNo.length()>0 && !sequenceNo.equalsIgnoreCase("null")){
+            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+formattedUserId+sequenceNo+ UniqueKeyGenerator.generateShortUuid();
+        }else{
+            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+formattedUserId+formattedDate+ UniqueKeyGenerator.generateShortUuid();
 
-        return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+formattedUserId+formattedDate+ UniqueKeyGenerator.generateShortUuid();
+        }
 
     }
 }

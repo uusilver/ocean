@@ -35,6 +35,9 @@ public class UserProductEntity {
     @Column(name="productAddress")
     private String productAddress;
 
+    @Transient
+    private String sequenceNo;
+
     public Integer getId() {
         return Id;
     }
@@ -129,5 +132,13 @@ public class UserProductEntity {
 
     public void setProductAddress(String productAddress) {
         this.productAddress = productAddress;
+    }
+
+    public String getSequenceNo() {
+        return sequenceNo;
+    }
+
+    public void setSequenceNo(String sequenceNo) {
+        this.sequenceNo = sequenceNo;
     }
 }

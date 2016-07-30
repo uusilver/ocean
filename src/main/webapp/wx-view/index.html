@@ -53,7 +53,7 @@
 
         var content = UE.getEditor('editor').getContent();
 
-        $.post("/wx-view/ued/saveChange",{"key": key, "content" : content},function(result){
+        $.post("/ocean/wx-view/ued/saveChange",{"key": key, "content" : content},function(result){
             if(result == "success")
                 alert("保存成功");
         });
@@ -61,7 +61,7 @@
 
     function setContent(isAppendTo) {
         var key = $("#sel  option:selected").val();
-        $.get("/wx-view/ued/query/"+key,function(data){
+        $.get("/ocean/wx-view/ued/query/"+key,function(data){
             UE.getEditor('editor').setContent(data, isAppendTo);
         })
 

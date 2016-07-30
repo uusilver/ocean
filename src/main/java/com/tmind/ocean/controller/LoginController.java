@@ -110,7 +110,7 @@ public class LoginController {
     public ModelAndView getCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         String code = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-        System.out.println("******************验证码是: " + code + "******************");
+        log.info("******************验证码是: " + code + "******************");
 
         response.setDateHeader("Expires", 0);
 

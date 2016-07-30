@@ -114,6 +114,12 @@
                             </td>
                         </tr>
                         <tr style="border:1px solid #CCCCCC;">
+                            <td style="border:1px solid #CCCCCC;text-align:center;">序列号(可不填)</td>
+                            <td><label>
+                                <input name="textfield" id="sequenceNo" type="text" required value="">
+                            </label></td>
+                        </tr>
+                        <tr style="border:1px solid #CCCCCC;">
                             <td style="border:1px solid #CCCCCC;text-align:center;">操作</td>
                             <td>
                                 <button type="button" id="createQrCode" class="button button-primary" style=" margin-top:10px;margin-bottom:10px;">提交</button>
@@ -156,8 +162,10 @@
             var productBatch = $("#batch_no").html();
             var qr_number = $("#qrcode_amount").val();
             var templateName = $("#templateName").html();
+            var sequenceNo = $("#sequenceNo").val();
 
-                $(".container").showLoading();
+
+            $(".container").showLoading();
                 //QRcode
                 $.ajax({
                     url:'../chanpin/createQrcode',
@@ -167,7 +175,9 @@
                         product_name:productName,
                         relate_batch:productBatch,
                         qrcode_total_no:qr_number,
-                        advice_temp:templateName
+                        advice_temp:templateName,
+                        sequenceNo:sequenceNo
+
                     },
                     success:function(data) {
                         $(".container").hideLoading();

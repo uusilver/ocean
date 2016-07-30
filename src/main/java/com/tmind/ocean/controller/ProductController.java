@@ -230,7 +230,7 @@ public class ProductController {
                     userType = LoginController.getLoginUser(req).getUser_type();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     //创建二维码
-                    if(productService.createQrcode(productEntityFake, LoginController.getLoginUser(req).getUserId(), userType)){
+                    if(productService.createQrcode(productEntityFake, LoginController.getLoginUser(req).getUserId(), userType, productEntityFake.getSequenceNo())){
                         userAccountService.updateUserAccountForConsuming(Integer.valueOf(productEntityFake.getQrcode_total_no()), userId);
                         productService.updateProductAndBatchQrTotalAccount(userId, productEntityFake.getProduct_id(), productEntityFake.getRelate_batch(), Integer.valueOf(productEntityFake.getQrcode_total_no()));
                         //更新用户消费纪录;
@@ -256,7 +256,7 @@ public class ProductController {
                 String userType = LoginController.getLoginUser(req).getUser_type();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 //创建二维码
-                if(productService.createQrcode(productEntityFake, LoginController.getLoginUser(req).getUserId(), userType)){
+                if(productService.createQrcode(productEntityFake, LoginController.getLoginUser(req).getUserId(), userType, productEntityFake.getSequenceNo())){
                     userAccountService.updateUserAccountForConsuming(Integer.valueOf(productEntityFake.getQrcode_total_no()), userId);
                     productService.updateProductAndBatchQrTotalAccount(userId, productEntityFake.getProduct_id(), productEntityFake.getRelate_batch(), Integer.valueOf(productEntityFake.getQrcode_total_no()));
                     //更新用户消费纪录;
