@@ -26,4 +26,25 @@ public class LoadSystemInfoService {
         session.close();
         return list.get(0).getSystem_message();
     }
+
+    public String updateSysInfo(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<SystemInfoEntity> list = null;
+        try {
+            String hql = "from SystemInfoEntity as SystemInfoEntity where SystemInfoEntity.id=:id";//使用命名参数，推荐使用，易读。
+            Query query = session.createQuery(hql);
+            query.setInteger("id", 99);
+            list = query.list();
+            //共12万100个物品正在使用315快查 <br/>今天监控问题产品1万1次 累计安全监控30万9420次
+            String message = list.get(0).getSystem_message();
+
+        }catch (Exception e){
+            log.warn(e.getMessage());
+        } finally{
+            if(session!=null){
+                session.close();
+            }
+        }
+        return null;
+    }
 }
