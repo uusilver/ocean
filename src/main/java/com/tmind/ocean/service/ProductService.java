@@ -5,6 +5,7 @@ import com.tmind.ocean.entity.UserProductEntity;
 import com.tmind.ocean.entity.UserProductMetaEntity;
 import com.tmind.ocean.entity.UserQrcodeEntity;
 import com.tmind.ocean.util.HibernateUtil;
+import com.tmind.ocean.util.PropertiesUtil;
 import com.tmind.ocean.util.UniqueKeyGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -376,7 +377,7 @@ public class ProductService {
                 未来要拓展
          */
         if(sequenceNo!=null && sequenceNo.length()>0 && !sequenceNo.equalsIgnoreCase("null")){
-            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+sequenceNo+ UniqueKeyGenerator.generateShortUuid();
+            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+sequenceNo+formattedDate +UniqueKeyGenerator.generateShortUuid();
         }else{
             return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+formattedUserId+formattedDate+ UniqueKeyGenerator.generateShortUuid();
 
