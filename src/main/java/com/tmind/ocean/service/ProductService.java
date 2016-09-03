@@ -212,7 +212,7 @@ public class ProductService {
             //得到缓存信息 和 具体的中奖信息，用于微信红包抽奖
             String lottery_desc = null;
             String cacheFlag = null;
-            if(productEntityFake.getLottery_info() != null){
+            if(productEntityFake.getLottery_info() != null && productEntityFake.getLottery_info() .length()>0){
                  lottery_desc = productEntityFake.getLottery_info().split("\\|")[0];
                  cacheFlag = productEntityFake.getLottery_info().split("\\|")[1];
             }
@@ -227,7 +227,7 @@ public class ProductService {
                 //表示是否缓存
                 m_user_qrcode_entity.setCache_flag(cacheFlag.toCharArray()[0]);
                 //表示是否中奖
-                if(lottery_desc == null)
+                if(lottery_desc == null || lottery_desc.length()==0)
                     m_user_qrcode_entity.setLottery_flag('N');
                 else {
                     m_user_qrcode_entity.setLottery_flag('Y');
