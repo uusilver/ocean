@@ -209,6 +209,13 @@ public class ProductService {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try{
             Transaction tran=session.beginTransaction();
+            //得到缓存信息 和 具体的中奖信息，用于微信红包抽奖
+            String lottery_desc = null;
+            String cacheFlag = null;
+            if(productEntityFake.getLottery_info() != null){
+                 lottery_desc = productEntityFake.getLottery_info().split("\\|")[0];
+                 cacheFlag = productEntityFake.getLottery_info().split("\\|")[1];
+            }
             //变量设定
             String formattedUserId = numberFormat.format(userId);
             String formattedDate = dateFormat.format(new Date());
@@ -218,9 +225,15 @@ public class ProductService {
                 m_user_qrcode_entity.setProduct_id(productEntityFake.getProduct_id());
                 m_user_qrcode_entity.setProduct_batch(productEntityFake.getRelate_batch());
                 //表示是否缓存
-                m_user_qrcode_entity.setCache_flag('Y');
+                m_user_qrcode_entity.setCache_flag(cacheFlag.toCharArray()[0]);
                 //表示是否中奖
-                m_user_qrcode_entity.setLottery_flag('N');
+                if(lottery_desc == null)
+                    m_user_qrcode_entity.setLottery_flag('N');
+                else {
+                    m_user_qrcode_entity.setLottery_flag('Y');
+                    m_user_qrcode_entity.setLottery_desc(lottery_desc);
+                }
+                m_user_qrcode_entity.setGet_lottery_flag('N');
                 //绑定唯一码
                 String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate, sequenceNo);
                 m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);

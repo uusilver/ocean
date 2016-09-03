@@ -120,6 +120,19 @@
                             </label></td>
                         </tr>
                         <tr style="border:1px solid #CCCCCC;">
+                            <td style="border:1px solid #CCCCCC;text-align:center;">是否缓存</td>
+                            <td><label>
+                                <input type="checkbox" id="cache_flag" name="cache_flag" value="Y" checked/>
+                                </label>
+                        </td>
+                        <tr style="border:1px solid #CCCCCC;">
+                            <td style="border:1px solid #CCCCCC;text-align:center;">lottery_desc</td>
+                            <td><label>
+                                <input type="textfield" id="lottery_desc" name="lottery_desc" value="" />
+                            </label>
+                        </td>
+                        </tr>
+                        <tr style="border:1px solid #CCCCCC;">
                             <td style="border:1px solid #CCCCCC;text-align:center;">操作</td>
                             <td>
                                 <button type="button" id="createQrCode" class="button button-primary" style=" margin-top:10px;margin-bottom:10px;">提交</button>
@@ -163,7 +176,19 @@
             var qr_number = $("#qrcode_amount").val();
             var templateName = $("#templateName").html();
             var sequenceNo = $("#sequenceNo").val();
+            var cache_flag = undefined;
+            var hasChk = $('#cache_flag').is(':checked');
+            if(hasChk){
+                cache_flag = "Y";
+            }else{
+                /*未选中*/
+                cache_flag = "N";
+            }
 
+            var lottery_desc = $("#lottery_desc").val();
+
+            //cache_flag 代表用户的查询数据是否缓存，lotter_desc表示具体的中奖信息，此处关联公共号抽奖
+            lottery_desc = lottery_desc+"|"+cache_flag;
 
             $(".container").showLoading();
                 //QRcode
@@ -176,7 +201,8 @@
                         relate_batch:productBatch,
                         qrcode_total_no:qr_number,
                         advice_temp:templateName,
-                        sequenceNo:sequenceNo
+                        sequenceNo:sequenceNo,
+                        lottery_info : lottery_desc
 
                     },
                     success:function(data) {
