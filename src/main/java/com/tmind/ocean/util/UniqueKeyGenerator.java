@@ -19,7 +19,7 @@ public class UniqueKeyGenerator {
     public static String generateShortUuid() {
         StringBuffer shortBuffer = new StringBuffer();
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             String str = uuid.substring(i * 4, i * 4 + 4);
             int x = Integer.parseInt(str, 16);
             shortBuffer.append(chars[x % 0x3E]);
@@ -31,18 +31,25 @@ public class UniqueKeyGenerator {
     /*
  * 返回长度为【strLength】的随机数，在前面补0
  */
-    public static String getFixLenthString(int strLength) {
+    public static String getFixLenthString(int length) {
 
-        Random rm = new Random();
+        String val = "";
+        Random random = new Random();
 
-        // 获得随机数
-        double pross = (1 + rm.nextDouble()) * Math.pow(10, strLength);
+        //参数length，表示生成几位随机数
+        for(int i = 0; i < length; i++) {
 
-        // 将获得的获得随机数转化为字符串
-        String fixLenthString = String.valueOf(pross);
-
-        // 返回固定的长度的随机数
-        return fixLenthString.substring(1, strLength + 1);
+            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
+            //输出字母还是数字
+            if( "char".equalsIgnoreCase(charOrNum) ) {
+                //输出是大写字母还是小写字母
+                int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;
+                val += (char)(random.nextInt(26) + temp);
+            } else if( "num".equalsIgnoreCase(charOrNum) ) {
+                val += String.valueOf(random.nextInt(10));
+            }
+        }
+        return val;
     }
 
 

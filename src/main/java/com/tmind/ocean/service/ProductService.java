@@ -392,7 +392,7 @@ public class ProductService {
         if(sequenceNo!=null && sequenceNo.length()>0 && !sequenceNo.equalsIgnoreCase("null")){
             return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+sequenceNo+formattedDate +UniqueKeyGenerator.generateShortUuid();
         }else{
-            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+formattedUserId+formattedDate+ UniqueKeyGenerator.generateShortUuid();
+            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+ UniqueKeyGenerator.getFixLenthString(10);
 
         }
 
