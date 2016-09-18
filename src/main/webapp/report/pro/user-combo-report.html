@@ -13,62 +13,69 @@
     </style>
     <script type="text/javascript">
         $(function () {
-            $('#container').highcharts({
-                title: {
-                    text: '扫码数据综合分析'
-                },
-                xAxis: {
-                    categories: ['1月', '2月', '3月', '4月', '5月']
-                },
-                labels: {
-                    items: [{
-                        html: '2016年1～6月扫码分析',
-                        style: {
-                            left: '50px',
-                            top: '18px',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+            //load data from server
+            $.get("../../report/queryLineReport",function(data){
+                var obj = eval('(' + data + ')');
+
+                $('#container').highcharts({
+                    title: {
+                        text: '扫码数据综合分析'
+                    },
+                    xAxis: {
+                        //['1月', '2月', '3月', '4月', '5月']
+                        categories:eval('(' + obj.month + ')')
+                    },
+                    labels: {
+                        items: [{
+                            html: obj.title,
+                            style: {
+                                left: '50px',
+                                top: '18px',
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                            }
+                        }]
+                    },
+                    series: [{
+                        type: 'column',
+                        name: '正常扫码',
+                        color:Highcharts.getOptions().colors[2],
+                        data: [34, 71, 12, 45, 62]
+                    }, {
+                        type: 'column',
+                        name: '异常扫码',
+                        color:Highcharts.getOptions().colors[5],
+                        data: [4, 3, 3, 9, 0]
+                    }, {
+                        type: 'spline',
+                        name: '平均数',
+                        data: [3, 2.67, 3, 6.33, 3.33],
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        }
+                    }, {
+                        type: 'pie',
+                        name: '扫码次数',
+                        data: [{
+                            name: '正常扫码',
+                            y: 230,
+                            color: Highcharts.getOptions().colors[2] // green
+                        }, {
+                            name: '潜在异常扫码',
+                            y: 19,
+                            color: Highcharts.getOptions().colors[5] // red
+                        }],
+                        center: [100, 80],
+                        size: 100,
+                        showInLegend: false,
+                        dataLabels: {
+                            enabled: false
                         }
                     }]
-                },
-                series: [{
-                    type: 'column',
-                    name: '正常扫码',
-                    color:Highcharts.getOptions().colors[2],
-                    data: [34, 71, 12, 45, 62]
-                }, {
-                    type: 'column',
-                    name: '异常扫码',
-                    color:Highcharts.getOptions().colors[5],
-                    data: [4, 3, 3, 9, 0]
-                }, {
-                    type: 'spline',
-                    name: '平均数',
-                    data: [3, 2.67, 3, 6.33, 3.33],
-                    marker: {
-                        lineWidth: 2,
-                        lineColor: Highcharts.getOptions().colors[3],
-                        fillColor: 'white'
-                    }
-                }, {
-                    type: 'pie',
-                    name: '扫码次数',
-                    data: [{
-                        name: '正常扫码',
-                        y: 230,
-                        color: Highcharts.getOptions().colors[2] // green
-                    }, {
-                        name: '潜在异常扫码',
-                        y: 19,
-                        color: Highcharts.getOptions().colors[5] // red
-                    }],
-                    center: [100, 80],
-                    size: 100,
-                    showInLegend: false,
-                    dataLabels: {
-                        enabled: false
-                    }
-                }]
+                });
             });
+
         });
 
 
