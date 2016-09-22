@@ -39,16 +39,16 @@
                         type: 'column',
                         name: '正常扫码',
                         color:Highcharts.getOptions().colors[2],
-                        data: [34, 71, 12, 45, 62]
+                        data: eval('(' + obj.normalScan + ')')
                     }, {
                         type: 'column',
                         name: '异常扫码',
                         color:Highcharts.getOptions().colors[5],
-                        data: [4, 3, 3, 9, 0]
+                        data: eval('(' + obj.warningScan + ')')
                     }, {
                         type: 'spline',
                         name: '平均数',
-                        data: [3, 2.67, 3, 6.33, 3.33],
+                        data: eval('(' + obj.averageScan + ')'),
                         marker: {
                             lineWidth: 2,
                             lineColor: Highcharts.getOptions().colors[3],
@@ -59,11 +59,11 @@
                         name: '扫码次数',
                         data: [{
                             name: '正常扫码',
-                            y: 230,
+                            y: obj.pieChartNormalScan,
                             color: Highcharts.getOptions().colors[2] // green
                         }, {
-                            name: '潜在异常扫码',
-                            y: 19,
+                            name: '异常扫码',
+                            y: obj.pieChartWarningScan,
                             color: Highcharts.getOptions().colors[5] // red
                         }],
                         center: [100, 80],
