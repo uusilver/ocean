@@ -96,6 +96,25 @@ public class UserReportController {
         return gson.toJson(userReportModel);
     }
 
+    @RequestMapping(value="/queryScanResultTable",method = RequestMethod.GET)
+    public @ResponseBody
+    String queryScanResultTable(HttpServletRequest req) {
+        Integer userId = LoginController.getLoginUserId(req);
+        //获取sql
+        SQLQuery query = HibernateUtil.getSessionFactory().openSession().createSQLQuery("select query_match, query_times, query_date from m_user_qrcode where user_id = ? and query_times >1 order by query_date asc");
+        query.setParameter(0, userId);
+        List<Object[]> list = query.list();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Object[] objects : list){
+            stringBuilder.append(objects[0]+"@");
+            stringBuilder.append(objects[1]+"@");
+            stringBuilder.append(objects[2]+"@");
+            stringBuilder.append("|");
+        }
+        return stringBuilder.toString();
+
+    }
+
     private static String[] getLast6Months(){
 
         String[] last6Months = new String[6];

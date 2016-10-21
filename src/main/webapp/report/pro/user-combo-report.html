@@ -76,6 +76,29 @@
                 });
             });
 
+            //加载图表
+            $.get("../../report/queryScanResultTable",function(data){
+                var html = '';
+                html +='<table border="1">';
+                html +='<tr>';
+                html +='<th>唯一码</th>';
+                html +='<th>扫码次数</th>';
+                html +='<th>扫码时间</th>';
+                html +='</tr>';
+                var lineData = data.split("|");
+                for(var index=0; index<lineData.length-1; index++){
+                    var datas = lineData[index].split("@");
+                        html+="<tr>";
+                        html+="<td>"+datas[0]+"</td>";
+                        html+="<td>"+datas[1]+"</td>";
+                        html+="<td>"+datas[2]+"</td>";
+                        html+="</tr>";
+                }
+                html +='</table>';
+                $("#content").append(html);
+
+            });
+
         });
 
 
@@ -86,6 +109,12 @@
 <script src="../js/modules/exporting.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+异常码统计表:<br/>
+    <div id="content">
+        </div>
+
+
 
 </body>
 </html>
