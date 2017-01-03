@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page session="false" %>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var optFlag1 = undefined;
+        var optFlag2 = undefined;
+        $("#query1").click(function(){
+            var value1 = $("#id1").val();
+            //load data from server
+            $.get("../../report/queryQrCodeInfoFromId/"+value1,function(data){
+                optFlag1 = true;
+                $("#result1").val(data);
+            });
+        })
+
+        $("#query2").click(function(){
+            var value2 = $("#id2").val();
+            //load data from server
+            $.get("../../report/queryQrCodeInfoFromId/"+value2,function(data){
+                optFlag2 = true;
+                $("#result2").val(data);
+            });
+        })
+
+        $("#save").click(function(){
+            var id1 = $("#id1").val();
+            var id2 = $("#id2").val();
+            var value1 = $("#result1").val();
+            var value2 = $("#result2").val();
+            if(optFlag1){
+                $.get("../../report/updateQrCodeInfoFromId/"+id1+"/"+value1,function(data){
+                });
+            }
+
+            if(optFlag2){
+                $.get("../../report/updateQrCodeInfoFromId/"+id2+"/"+value2,function(data){
+                });
+            }
+            alert("保存完成");
+        })
+    });
+</script>
+<body>
+第一条数据修改:<input type="text" id="id1" value=""/> <button id="query1">查询</button><input type="text" id="result1"/>
+<br/>
+第二条数据修改:<input type="text" id="id2" value=""/> <button id="query2">查询</button><input type="text" id="result2"/>
+<br/>
+<button id="save">保存</button>
+</body>
+</html>

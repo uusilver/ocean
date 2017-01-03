@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import com.tmind.ocean.model.UserReportModel;
 import com.tmind.ocean.util.HibernateUtil;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
@@ -113,6 +112,41 @@ public class UserReportController {
         }
         return stringBuilder.toString();
 
+    }
+
+    @RequestMapping(value="/queryQrCodeInfoFromId/{id}",method = RequestMethod.GET)
+    public @ResponseBody
+    String queryQrCodeInfoFromId(HttpServletRequest req, @PathVariable("id") String id) {
+        Integer userId = LoginController.getLoginUserId(req);
+        //获取sql
+        SQLQuery query = HibernateUtil.getSessionFactory().openSession().createSQLQuery("select lottery_desc from m_user_qrcode where user_id = ? and query_match like ?");
+        query.setParameter(0, userId);
+        query.setParameter(1, "%"+id+"%");
+        List<Object[]> list = query.list();
+        if(list.size()==1){
+            Object object = list.get(0);
+            if(object == null)
+                return "";
+            else
+                return String.valueOf(object);
+        }
+        return "";
+    }
+
+    @RequestMapping(value="/updateQrCodeInfoFromId/{id}/{value}",method = RequestMethod.GET)
+    public @ResponseBody
+    String updateQrCodeInfoFromId(HttpServletRequest req, @PathVariable("id") String id, @PathVariable("value") String value) {
+        Integer userId = LoginController.getLoginUserId(req);
+        //获取sql
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tran = session.beginTransaction();
+        SQLQuery query = session.createSQLQuery("update m_user_qrcode set lottery_desc =? where user_id = ? and query_match like ?");
+        query.setParameter(0, value);
+        query.setParameter(1, userId);
+        query.setParameter(2, "%"+id+"%");
+        int result = query.executeUpdate();
+        tran.commit();
+        return "success";
     }
 
     private static String[] getLast6Months(){

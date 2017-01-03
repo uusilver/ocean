@@ -1,5 +1,6 @@
 package com.tmind.ocean.service;
 
+import com.tmind.ocean.controller.LoginController;
 import com.tmind.ocean.entity.UserParamsEntity;
 import com.tmind.ocean.entity.UserProductEntity;
 import com.tmind.ocean.entity.UserProductMetaEntity;
@@ -14,9 +15,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by lijunying on 15/11/21.
@@ -219,6 +223,32 @@ public class ProductService {
             //变量设定
             String formattedUserId = numberFormat.format(userId);
             String formattedDate = dateFormat.format(new Date());
+            //获取用户自定义的唯一码生成公式
+            //绑定唯一码
+            /**
+             * D代表数字 D[7]0000001 代表数字长度，从0000001开始
+             * R代表随机数
+             * S代表字符串
+             * X代表混合，包含字母和数字
+             * TIME表示日期
+             * UIQ代表用户序列号
+             * <p>
+             * {X10}
+             * {X10}{UIQ}
+             * {X10}{TIME}
+             * {D[8]00000001}
+             * {X4}{UIQ}{TIME}{D[7]0000001}
+             */
+            int currentStep = 0;
+            DecimalFormat df = null;
+            String regex = sequenceNo;
+            if(sequenceNo!=null && sequenceNo.length()>0) {
+                if (isSequence(regex)) {
+                    currentStep = getStartStep(regex);
+                    df = getDecimalFormat(regex);
+                }
+            }
+            //正式开始生成
             for(int i=0;i<Integer.valueOf(productEntityFake.getQrcode_total_no());i++){
                 UserQrcodeEntity m_user_qrcode_entity = new UserQrcodeEntity();
                 m_user_qrcode_entity.setUser_id(userId);
@@ -234,8 +264,14 @@ public class ProductService {
                     m_user_qrcode_entity.setLottery_desc(lottery_desc);
                 }
                 m_user_qrcode_entity.setGet_lottery_flag('N');
-                //绑定唯一码
-                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate, sequenceNo);
+
+                String uniqueKey = null;
+                if(sequenceNo!=null && sequenceNo.length()>0) {
+                    uniqueKey = randomStringGenerator(regex, currentStep, df, formattedUserId);
+                }
+                currentStep++;
+
+                String qrcodeQueryString = generateQRCodeString(userType, productEntityFake.getAdvice_temp(), formattedUserId, formattedDate, uniqueKey);
                 m_user_qrcode_entity.setQr_query_string(qrcodeQueryString);
                 m_user_qrcode_entity.setQuery_match(qrcodeQueryString.split("\\?")[1]);
                 m_user_qrcode_entity.setIp_check_flag("N");
@@ -372,9 +408,10 @@ public class ProductService {
 
     /*
         @see: user表中的user_type
+        unqiueCode可从外部获取
      */
     private String generateQRCodeString(String userType, String batchTemplateName,
-                                        String formattedUserId, String formattedDate, String sequenceNo){
+                                        String formattedUserId, String formattedDate, String uniqueCode){
 
         /*
             sequenceNo:代表生成的二维码是否要增加序列，用来区分不同批次的二维码顺序
@@ -389,12 +426,135 @@ public class ProductService {
                 第三个表示，用户的访问模版:y代表柚子，j代表酒，t代表桃子
                 未来要拓展
          */
-        if(sequenceNo!=null && sequenceNo.length()>0 && !sequenceNo.equalsIgnoreCase("null")){
-            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+sequenceNo+formattedDate +UniqueKeyGenerator.generateShortUuid();
+        if(uniqueCode!=null && uniqueCode.length()>0 && !uniqueCode.equalsIgnoreCase("null")){
+            return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+uniqueCode;
         }else{
             return "http://"+urlPrefix+".315kc.com/m/r/"+batchTemplateName+"/i.htm?"+ UniqueKeyGenerator.getFixLenthString(10);
 
         }
 
+    }
+
+    private String randomStringGenerator(String regex, int currentStep, DecimalFormat df, String userId) {
+        String[] groups = getRegexGroup(regex);
+        StringBuilder sb = new StringBuilder();
+        for (String subRegex : groups) {
+            //移除掉第一
+            generateStringBaseOnRegesSubGroup(subRegex, sb, currentStep, df, userId);
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * 核心处理类
+     * @param subRegex
+     * @param stringBuilder
+     * @param currentStep
+     * @param df
+     * @return
+     */
+    public StringBuilder generateStringBaseOnRegesSubGroup(String subRegex, final StringBuilder stringBuilder, int currentStep, DecimalFormat df, String userId) {
+        char[] chars = subRegex.toCharArray();
+        // 纯的任意随机数
+        if ('X' == subRegex.charAt(0)) {
+            String length = subRegex.substring(1, subRegex.length());
+            stringBuilder.append(getRandomCharAndNumr(Integer.valueOf(length)));
+        }
+        //添加日期
+        if ("TIME".equalsIgnoreCase(subRegex)) {
+            stringBuilder.append(getCurrentDateTime());
+        }
+        //添加用户ID
+        if ("UIQ".equalsIgnoreCase(subRegex)) {
+            stringBuilder.append(userId);
+        }
+
+        //数字序号
+        if ('D' == subRegex.charAt(0)) {
+            stringBuilder.append(df.format(currentStep));
+        }
+        return stringBuilder;
+    }
+
+    /**
+     * 获取随机字母数字组合
+     *
+     * @param length 字符串长度
+     * @return
+     */
+    private String getRandomCharAndNumr(Integer length) {
+        String str = "";
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            boolean b = random.nextBoolean();
+            if (b) { // 字符串
+                int choice = random.nextBoolean() ? 65 : 97; //取得65大写字母还是97小写字母
+                str += (char) (choice + random.nextInt(26));// 取得随机大小写字母
+            }
+            else { // 数字
+                str += String.valueOf(random.nextInt(10));
+            }
+        }
+        return str;
+    }
+
+
+    private String getCurrentDateTime() {
+        long l = System.currentTimeMillis();
+        //new日期对象
+        Date date = new Date(l);
+        //转换提日期输出格式
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        return (dateFormat.format(date));
+    }
+
+    private boolean isSequence(String regex) {
+        return (regex.indexOf("D") > 0 || regex.indexOf("d") > 0) ? true : false;
+    }
+
+    private int getStartStep(String regex) throws Exception {
+
+        //获得数字信息
+        String dataInfo = getStepDatInfo(regex);
+        //[7]0000001
+        String length = dataInfo.split("]")[0].replace("[", "");
+        String startNum = dataInfo.split("]")[1];
+        if (startNum.length() != Integer.valueOf(length)) {
+            throw new Exception("数字长度不匹配");
+        }
+        return Integer.valueOf(startNum);
+
+    }
+
+    private DecimalFormat getDecimalFormat(String regex) throws Exception {
+        //获得数字信息
+        String dataInfo = getStepDatInfo(regex);
+        //[7]0000001
+        String length = dataInfo.split("]")[0].replace("[", "");
+        String type = "";
+        for (int i = 0; i < Integer.valueOf(length); i++) {
+            type += "0";
+        }
+        return new DecimalFormat(type);
+
+    }
+
+    private String[] getRegexGroup(String regex) {
+        String regexAfterMove = regex.substring(1, regex.length() - 1); //移除掉第一个和最后一个{}花括号
+        String[] groups = regexAfterMove.split("\\}\\{");
+        return groups;
+    }
+
+    private String getStepDatInfo(String regex) {
+        String[] groups = getRegexGroup(regex);
+        for (String subRegex : groups) {
+            if (subRegex.charAt(0) == 'D') {
+                //获得数字信息
+                String dataInfo = subRegex.substring(1, subRegex.length());
+                return dataInfo;
+            }
+        }
+        return null;
     }
 }

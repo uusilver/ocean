@@ -114,9 +114,22 @@
                             </td>
                         </tr>
                         <tr style="border:1px solid #CCCCCC;">
+                            /**
+                            * D代表数字 D[7]0000001 代表数字长度，从0000001开始 <br/>
+                            * R代表随机数<br/>
+                            * S代表字符串<br/>
+                            * X代表混合，包含字母和数字<br/>
+                            * TIME表示日期<br/>
+                            * <p>
+                            * {X10}<br/>
+                            * {X10}{UIQ}<br/>
+                            * {X10}{TIME}<br/>
+                            * {D[8]00000001}<br/>
+                            * {X4}{UIQ}{TIME}{D[7]0000001}<br/>
+                            */
                             <td style="border:1px solid #CCCCCC;text-align:center;">序列号(可不填)</td>
                             <td><label>
-                                <input name="textfield" id="sequenceNo" type="text" required value="">
+                                <input name="textfield" id="sequenceNo" type="text" style="width: 200px" required value="{X4}{UIQ}{TIME}{D[7]0000001}">
                             </label></td>
                         </tr>
                         <tr style="border:1px solid #CCCCCC;">
